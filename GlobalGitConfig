@@ -1,0 +1,20 @@
+[credential]
+	helper = store
+
+[user]
+	name = AKen.Hsu
+	email = aken.hsu@mic.com.tw
+
+[color]
+	ui = auto
+
+[alias]
+	co = checkout
+	st = status
+	br = branch
+	cm = commit
+	rst = reset --hard
+	df = diff --patch
+	stg = diff --staged --patch
+
+	p-ghub = push -u origin master
