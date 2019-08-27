@@ -55,7 +55,8 @@ function CollapsedPWD() {
 
 # Set PROMPT
 # export PS1='\[\e[38;5;135m\]\h\[\e[0m\]:\[\e[38;5;166m\]\w\[\e[0m[\[\e[38;5;118m\]\A\[\e[0m\]]\$ '
-export PS1="${COLOR_LAK}\h${COLOR_NON}:${COLOR_GRN}\w${COLOR_NON}[${COLOR_RED}\A${COLOR_NON}] "
+SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
+export PS1="${COLOR_LAK}${SHORT_HOST}${COLOR_NON}:${COLOR_GRN}\w${COLOR_NON}[${COLOR_RED}\A${COLOR_NON}] "
 
 #PS1="\[\e]0;\u@\h\a\]$PS1" # Change the putty title
 
