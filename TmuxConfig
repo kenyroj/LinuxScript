@@ -1,0 +1,13 @@
+# Modify the prefix key of tmux from C-b to C-w
+set -g prefix C-w
+unbind C-b
+
+# Prefix + C-r to reload the tmux.conf and show message.
+bind C-r source-file ~/.tmux.conf \; display "tmux settings Reloaded!"
+
+# Move the cursor between panes like vim
+bind-key k select-pane -U 
+bind-key j select-pane -D
+bind-key h select-pane -L
+bind-key l select-pane -R
+
