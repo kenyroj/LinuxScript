@@ -29,3 +29,9 @@ echo
 echo ========
 echo ${COL_YLW}"Check the tmux setting is linked"${COL_NON}", command:"
 echo ${COL_GRN}"ln -s $PWD/TmuxConfig ~/.tmux.conf"${COL_NON}
+
+# ==== Sync the vimrc setting ====
+echo
+echo ========
+echo ${COL_YLW}"Check the vimrc setting is linked"${COL_NON}", command:"
+echo ${COL_GRN}"ln -s $PWD/VimRC ~/.vimrc"${COL_NON}

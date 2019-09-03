@@ -1,0 +1,13 @@
+colorscheme torte 	" darkblue, torte, evening.
+
+set tabstop=4
+set incsearch       " Enforce Search, searching while key in text
+set hlsearch        " Highlight search result
+set ru              " Display text cursor position at Right-Down connor
+set nu              " Display line number
+set showcmd         " Show your vim command at Right-Down connor
+set showmatch       " 標示成對的括號
+
+" Set for C/CPP IDE
+set cindent         " Highlight C Identifier
+set ai      		" [autoindent] New line will add TAB automatically
