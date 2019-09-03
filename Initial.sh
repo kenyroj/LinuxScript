@@ -56,7 +56,18 @@ function CollapsedPWD() {
 # Set PROMPT
 # export PS1='\[\e[38;5;135m\]\h\[\e[0m\]:\[\e[38;5;166m\]\w\[\e[0m[\[\e[38;5;118m\]\A\[\e[0m\]]\$ '
 SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
-export PS1="${PSC_LAK}${SHORT_HOST}${PSC_NON}:${PSC_GRN}\w${PSC_NON}[$(PSC_RGB 208)\A${PSC_NON}] "
+PS_TIME_COLOR=$(PSC_RGB 208)
+if [ $UID = 0 ] ; then
+	# if user is root, use Red time
+	PS_TIME_COLOR=$PSC_RED
+elif [ "$USER" = "kenyroj" -o "$USER" = "aken.hsu" ] ; then
+	# if user ID is aken.hsu or kenyroj, use Yellow time
+	PS_TIME_COLOR=$PSC_YLW
+else
+	# Other users, use Blue time
+	PS_TIME_COLOR=$PSC_BLU
+fi
+export PS1="${PSC_LAK}${SHORT_HOST}${PSC_NON}:${PSC_GRN}\w${PSC_NON}[$PS_TIME_COLOR\A${PSC_NON}] "
 
 #PS1="\[\e]0;\u@\h\a\]$PS1" # Change the putty title
 
