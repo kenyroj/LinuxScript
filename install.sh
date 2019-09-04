@@ -9,6 +9,15 @@ else
 	echo "source $InitName" >> ~/.bashrc
 fi
 
+# ==== Add z.sh for quick access path ====
+if [ -d "z" ]; then
+	echo "z.sh has already installed, sync it."
+	cd z ; git pull
+else
+	git clone https://github.com/rupa/z
+	echo "source $PWD/z/z.sh" >> ~/.bashrc
+fi
+
 # ==== Sync the Global gitconfig setting ====
 echo
 echo ========
