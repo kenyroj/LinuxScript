@@ -1,5 +1,16 @@
 #!/bin/bash
 
+function CCat() {
+	local style="monokai"
+	if [ $# -eq 0 ] ; then
+		pygmentize -P style=$style -P tabsize=4 -f terminal256 -g
+	else
+		for NAME in $@ ; do
+			pygmentize -P style=$style -P tabsize=4 -f terminal256 -g "$NAME"
+		done
+	fi
+}
+
 function NoCtrlM () {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 filename [filename1 [filename2 ...]]"
