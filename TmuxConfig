@@ -11,3 +11,6 @@ bind-key j select-pane -D
 bind-key h select-pane -L
 bind-key l select-pane -R
 
+# Make tmux support 256 Color, Need to add alias: alias tmux='tmux -2'
+set -g default-terminal "screen-256color"
+

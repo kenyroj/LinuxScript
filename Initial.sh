@@ -11,7 +11,10 @@ alias ls='ls --color=auto -F'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+
 alias ..='cd ..;'
+
+alias tmux='tmux -2'
 
 # ==== For PROMPT ====
 function CollapsedPWD() {
