@@ -18,3 +18,5 @@
 	stg = diff --staged --patch
 
 	p-ghub = push -u origin master
+[push]
+	default = simple
