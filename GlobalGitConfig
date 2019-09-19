@@ -17,6 +17,7 @@
 	df = diff --patch
 	stg = diff --staged --patch
 
-	p-ghub = push -u origin master
+	p-oMast = push -u origin master
+	p-rfMast = push origin HEAD:refs/for/master
 [push]
 	default = simple
