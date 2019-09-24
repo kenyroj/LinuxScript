@@ -74,6 +74,6 @@ export PS1='${?/#0/}'"${PSC_LAK}${SHORT_HOST}${PSC_NON}:${PSC_GRN}\w${PSC_NON}[$
 
 function ExeCmd() {
 	CMD=$*
-	echo ${COLOR_YLW}" ==>" ${COLOR_GRN}${CMD}${COLOR_NON}
+	echo ${COL_YLW}" ==>" ${COL_GRN}${CMD}${COL_NON}
 	${CMD}
 }
