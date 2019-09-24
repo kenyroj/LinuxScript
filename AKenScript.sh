@@ -1,5 +1,17 @@
 #!/bin/bash
 
+function KeepNewNFiles() {
+	if test $# -eq 0 ; then
+		echo "USAGE: $0 <<Numbers of files to keep>>"
+		exit 1
+	fi
+	NumToKeep=$1
+	Cmd="ls -t | sed -e '1,${NumToKeep}d' | /usr/bin/xargs -d '\n' rm"
+#	Cmd=rm `ls -t | awk 'NR>5'`
+	echo Run this command: ${COL_YLW} $Cmd${COL_NON}
+#	ExeCmd $Cmd
+}
+
 function CCat() {
 	local style="monokai"
 	if [ $# -eq 0 ] ; then
