@@ -21,3 +21,5 @@
 	p-rfMast = push origin HEAD:refs/for/master
 [push]
 	default = simple
+[core]
+	editor = vim
