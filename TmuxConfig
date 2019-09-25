@@ -14,3 +14,6 @@ bind-key l select-pane -R
 # Make tmux support 256 Color, Need to add alias: alias tmux='tmux -2'
 set -g default-terminal "screen-256color"
 
+# Increase the scroll buffer size from 2000 to ...
+set-option -g history-limit 10000
+
