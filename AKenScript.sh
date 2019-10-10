@@ -12,6 +12,19 @@ function KeepNewNFiles() {
 #	ExeCmd $Cmd
 }
 
+export GERRIT_USER=aken.hsu
+export GERRIT_HOST=10.88.26.15
+function CmdGerrit() {
+	Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} gerrit $*"
+	ExeCmd $Cmd
+}
+function DelGerritProj() {
+	for EachGit in $* ; do
+		Cmd="ssh -p 29418 $GERRIT_USER@$GERRIT_HOST delete-project delete --yes-really-delete $EachGit"
+		ExeCmd $Cmd
+	done;
+}
+
 function CCat() {
 	local style="monokai"
 	if [ $# -eq 0 ] ; then
