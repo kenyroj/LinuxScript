@@ -24,11 +24,11 @@ function BackupDatabase() {
 	LogWithTime "====> $CMD"
 	$CMD >> /dev/null 2>&1
 
-	KEEP_BACKUP=5
-	CMD="ls -td \"${BACKUP_PATH}/*\" | sed -e '1,${KEEP_BACKUP}d' | /usr/bin/xargs -d '\n' rm"
-	LogWithTime Remove Old backups and keep $KEEP_BACKUP files
-	LogWithTime "====> $CMD"
-	$CMD >> $LOG_FILE 2>&1
+#	KEEP_BACKUP=5
+#	CMD="ls -td \"${BACKUP_PATH}/*\" | sed -e '1,${KEEP_BACKUP}d' | /usr/bin/xargs -d '\n' rm"
+#	LogWithTime Remove Old backups and keep $KEEP_BACKUP files
+#	LogWithTime "====> $CMD"
+#	$CMD >> $LOG_FILE 2>&1
 
 	CMD="rm -rf $TMP_DATA $TMP_CONF"
 	LogWithTime Remove Temp database and config:
@@ -47,7 +47,7 @@ function BackupDatabase() {
 }
 
 function OpenGrokIndex() {
-	LogWithTime Start Indexing the codes and will cost some about 1Hr...
+	LogWithTime Start Indexing the codes and will cost about 1 Hr...
 	export JAVA_OPTS=-Xmx4096m -Xmx4096
 	time opengrok-indexer \
 		-J=-Djava.util.logging.config.file=/opt/opengrok-1.3.1/doc/logging.properties \
@@ -56,8 +56,22 @@ function OpenGrokIndex() {
 		-d $IDX_DATA \
 		-H -P -S -G \
 		-W $IDX_CONF >> $LOG_FILE 2>&1
+}
 
-	LogWithTime OpenGrok finished indexing the codes. Now can restart tomcat8.
+function CheckIndexOKorRestoreTemp() {
+	if [ ! -f "$IDX_CONF" ] ; then
+		LogWithTime "**** Indexing Failed, restore previous index... ****"
+
+		CMD="mv $TMP_DATA $IDX_DATA"
+		LogWithTime Move TMP database to Original:
+		LogWithTime "====> $CMD"
+		$CMD >> $LOG_FILE 2>&1
+
+		CMD="mv $TMP_CONF $IDX_CONF"
+		LogWithTime Move TMP config to Original:
+		LogWithTime "====> $CMD"
+		$CMD >> $LOG_FILE 2>&1
+	fi
 }
 
 function RepoSyncAllProj() {
@@ -75,7 +89,15 @@ function RepoSyncAllProj() {
 	done
 }
 
-BackupDatabase
+
+if [ "$EUID" == "0" ] ; then
+  LogWithTime " **** This script does not allow root. ****"
+  exit 1
+fi
+
 RepoSyncAllProj
+BackupDatabase
 OpenGrokIndex
+CheckIndexOKorRestoreTemp
+LogWithTime OpenGrok finished indexing the codes. Now can restart tomcat8.
 
