@@ -5,6 +5,16 @@
 	name = AKen.Hsu
 	email = aken.hsu@mic.com.tw
 
+[url "ssh://aken.hsu@10.88.26.15:29418"]
+	insteadOf = gerrit://main.apbcrdd5.mdt
+[url "ssh://aken.hsu@10.88.26.15:29418"]
+	pushinsteadof = gerrit://main.apbcrdd5.mdt
+
+#[url "ssh://aken.hsu@10.88.26.14:29418"]
+#	insteadOf = gerrit://backup.apbcrdd5.mdt
+#[url "ssh://aken.hsu@10.88.26.14:29418"]
+#	pushinsteadof = gerrit://backup.apbcrdd5.mdt
+
 [color]
 	ui = auto
 
@@ -19,6 +29,7 @@
 
 	p-oMast = push -u origin master
 	p-rfMast = push origin HEAD:refs/for/master
+	p-sc66-evb = push origin HEAD:refs/for/sc66-android-quectel-evb
 [push]
 	default = simple
 [core]
