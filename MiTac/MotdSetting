@@ -1,0 +1,12 @@
+#!/bin/bash
+# This file should be linked or copy to /etc/update-motd.d and can update motd
+
+# DiskUsage section, the DiskUsage information should be created by crontab
+echo
+cat /data/apbcrdd5/.DiskUsage
+
+# Show the weather, need to install 'ansiweather' first.
+echo
+ansiweather -l taipei -u metric
+ansiweather -l taipei -u metric -s true -f 3 -d true
+
