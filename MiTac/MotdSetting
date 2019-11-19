@@ -6,7 +6,7 @@ echo
 cat /data/apbcrdd5/.DiskUsage
 
 # Show the weather, need to install 'ansiweather' first.
-echo
-ansiweather -l taipei -u metric
-ansiweather -l taipei -u metric -s true -f 3 -d true
+#echo
+#ansiweather -l taipei -u metric
+#ansiweather -l taipei -u metric -s true -f 3 -d true
 
