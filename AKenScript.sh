@@ -12,15 +12,34 @@ function KeepNewNFiles() {
 #	ExeCmd $Cmd
 }
 
+function ChOwnGrp() {
+	chown $*
+	chgrp $*
+}
+
 export GERRIT_USER=aken.hsu
 export GERRIT_HOST=10.88.26.15
 function CmdGerrit() {
 	Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} gerrit $*"
 	ExeCmd $Cmd
 }
+function PushHeadTagByGit() {
+	PROJ_NAME=$1
+	for n in $(git for-each-ref --format='%(refname)' refs/heads) ; do
+		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
+		Cmd="git push ssh://${GERRIT_USER}@${GERRIT_HOST}:29418/${PROJ_NAME} $n"
+		ExeCmd $Cmd
+	done
+	for n in $(git for-each-ref --format='%(refname)' refs/tags) ; do
+		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
+		Cmd="git push ssh://${GERRIT_USER}@${GERRIT_HOST}:29418/${PROJ_NAME} $n"
+		ExeCmd $Cmd
+	done
+	echo Push heads and tags of $PROJ_NAME Finished.
+}
 function DelGerritProj() {
 	for EachGit in $* ; do
-		Cmd="ssh -p 29418 $GERRIT_USER@$GERRIT_HOST delete-project delete --yes-really-delete $EachGit"
+		Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} delete-project delete --yes-really-delete $EachGit"
 		ExeCmd $Cmd
 	done;
 }
