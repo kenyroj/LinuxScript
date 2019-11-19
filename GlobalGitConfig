@@ -29,7 +29,11 @@
 
 	p-oMast = push -u origin master
 	p-rfMast = push origin HEAD:refs/for/master
+
 	p-sc66-evb = push origin HEAD:refs/for/sc66-android-quectel-evb
+	p-sc20-evb = push origin HEAD:refs/for/sc20-android-quectel-evb
+	p-sc66-dev = push origin HEAD:refs/for/sc66-android-evb-dev
+	p-sc20-dev = push origin HEAD:refs/for/sc20-android-evb-dev
 [push]
 	default = simple
 [core]
