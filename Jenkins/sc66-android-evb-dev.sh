@@ -1,13 +1,8 @@
 echo ======== Variables of Jenkins ========
-BRANCH_NAME=$1
-BUILD_NUMBER=$2
-JENKINS_URL=$3
-BUILD_URL=$4
-
-echo $BRANCH_NAME=$1
-echo $BUILD_NUMBER=$2
-echo $JENKINS_URL=$3
-echo $BUILD_URL=$4
+echo BRANCH_NAME=$BRANCH_NAME
+echo BUILD_NUMBER=$BUILD_NUMBER
+echo JENKINS_URL=$JENKINS_URL
+echo BUILD_URL=$BUILD_URL
 
 echo ======== ENV Setting for Jenkins ========
 export PATH=$PATH:.
