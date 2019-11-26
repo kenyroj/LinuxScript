@@ -1,7 +1,8 @@
 #!/bin/bash
+ThisDir=`pwd`
 
 # ==== Add Initial.sh in .bashrc ====
-InitName="$PWD/Initial.sh"
+InitName="$ThisDir/Initial.sh"
 if grep -q $InitName ~/.bashrc ; then
 	echo "Setting of $InitName was in ~/.bashrc"
 else
@@ -15,14 +16,14 @@ if [ -d "z" ]; then
 	cd z ; git pull
 else
 	git clone https://github.com/rupa/z
-	echo "source $PWD/z/z.sh" >> ~/.bashrc
+	echo "source $ThisDir/z/z.sh" >> ~/.bashrc
 fi
 
 # ==== Sync the Global gitconfig setting ====
 echo
 echo ========
 echo ${COL_YLW}"Check the Global gitconfig is linked"${COL_NON}", command:"
-echo ${COL_GRN}"ln -s $PWD/GlobalGitConfig ~/.gitconfig"${COL_NON}
+echo ${COL_GRN}"ln -s $ThisDir/GlobalGitConfig ~/.gitconfig"${COL_NON}
 
 # ==== Add local git config for GitHub,  in .get/config ====
 echo
@@ -37,10 +38,10 @@ echo "	username = kenyroj"${COL_NON}
 echo
 echo ========
 echo ${COL_YLW}"Check the tmux setting is linked"${COL_NON}", command:"
-echo ${COL_GRN}"ln -s $PWD/TmuxConfig ~/.tmux.conf"${COL_NON}
+echo ${COL_GRN}"ln -s $ThisDir/TmuxConfig ~/.tmux.conf"${COL_NON}
 
 # ==== Sync the vimrc setting ====
 echo
 echo ========
 echo ${COL_YLW}"Check the vimrc setting is linked"${COL_NON}", command:"
-echo ${COL_GRN}"ln -s $PWD/VimRC ~/.vimrc"${COL_NON}
+echo ${COL_GRN}"ln -s $ThisDir/VimRC ~/.vimrc"${COL_NON}
