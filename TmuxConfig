@@ -79,17 +79,17 @@ set-window-option -g clock-mode-colour colour109 #blue
 set-window-option -g window-status-bell-style bg=colour167,fg=colour235 # bg=red, fg=bg
 
 set-option -g status-left "\
-#[fg=colour7, bg=colour241]#{?client_prefix,#[bg=colour167],}[#S] "
+#[fg=colour7, bg=colour241]#{?client_prefix,#[bg=colour167],} [#S] "
 
 set-option -g status-right "\
 #[fg=colour246, bg=colour238] #H \
 #[fg=colour214, bg=colour237] %m-%d \
-#[fg=colour109, bg=colour239] %H:%M \
+#[fg=colour222, bg=colour239] %H:%M \
 #[fg=colour248, bg=colour239]"
 
 set-window-option -g window-status-current-format "\
-#[fg=colour239, bg=colour214] #I:\
-#[fg=colour239, bg=colour214]#W "
+#[fg=colour23, bg=colour214] #I:\
+#[fg=colour23, bg=colour214]#W "
 
 set-window-option -g window-status-format "\
 #[fg=colour223, bg=colour239] #I:\
