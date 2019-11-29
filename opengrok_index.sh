@@ -76,7 +76,6 @@ function CheckIndexOKorRestoreTemp() {
 		$CMD >> $LOG_FILE 2>&1
 
 		LogWithTime OpenGrok finished indexing the codes and Success. Suggested to restart tomcat8 service.
-		BackupDatabase
 	fi
 }
 
@@ -111,6 +110,6 @@ if [ "$EUID" == "0" ] ; then
 fi
 
 RepoSyncAllProj
-# OpenGrokIndex
+OpenGrokIndex
 CheckIndexOKorRestoreTemp
-
+# BackupDatabase
