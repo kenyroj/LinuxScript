@@ -11,3 +11,8 @@ function Build() {
 	make $* | tee $LOG_NAME
 }
 
+function MMM() {
+	LOG_NAME=Log.Build.$NOW_TIME.txt
+	INIT
+	mmm $* | tee $LOG_NAME
+}
