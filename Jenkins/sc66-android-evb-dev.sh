@@ -7,8 +7,12 @@ echo BUILD_URL=$BUILD_URL
 echo ======== Variables From Parameters ========
 echo DailyManifest=$DailyManifest
 echo BranchName=$BranchName
+echo BuildVariant=$BuildVariant
+echo BuildDist=$BuildDist
 
 echo ======== ENV Setting for Jenkins ========
+export USE_CCACHE=1
+export CCACHE_DIR=/mnt/nfs/CCache
 export PATH=$PATH:.
 GERRIT_URL=gerrit://main.apbcrdd5.mdt
 PRJ_NAME=$BranchName
@@ -41,9 +45,15 @@ repo init -u $GERRIT_URL/manifest.git -b $PRJ_NAME $REPO_MANIFEST --reference /m
 repo sync -c -j4
 
 echo ======== Start Building ========
+if [ $BuildDist ] ; then
+	DIST="dist"
+else
+	DIST=""
+fi
+
 source build/envsetup.sh
-lunch sdm660_64-userdebug
-make -j4
+lunch sdm660_64-$BuildVariant
+make -j8 $DIST
 
 echo ======== Generate flat_bin Image ========
 cd ..
@@ -56,5 +66,16 @@ cd flat_bin
 mkdir -p $DPL_PATH
 zip -r $DPL_PATH/${BUILD_NAME}.zip *
 
+echo ======== Deploy dist image ========
+if [ $BuildDist ] ; then
+	cd $SRC_PATH
+	cd $ANDROID_FOLDER
+	cp out/target/product/sdm660_64/obj/PACKAGING/target_files_intermediates/sdm660_64-target_files-eng.*.zip ./sdm660_64-target_files-eng.${BUILD_NAME}.zip
+	./build/tools/releasetools/ota_from_target_files -v --block -p out/host/linux-x86 -k build/target/product/security/testkey sdm660_64-target_files-eng.${BUILD_NAME}.zip FullOTAupdate.${BUILD_NAME}.zip
+    mv sdm660_64-target_files-eng.${BUILD_NAME}.zip $DPL_PATH/
+    mv FullOTAupdate.${BUILD_NAME}.zip $DPL_PATH/
+fi
+
+echo ======== Rm Built Codes ========
 cd $SRC_HOME
 rm -rf $SRC_PATH
