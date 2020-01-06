@@ -5,15 +5,15 @@
 	name = AKen.Hsu
 	email = aken.hsu@mic.com.tw
 
+[url "ssh://aken.hsu@10.88.26.14:29418"]
+	insteadOf = gerrit://main.mdt
+[url "ssh://aken.hsu@10.88.26.14:29418"]
+	pushinsteadof = gerrit://main.mdt
+
 [url "ssh://aken.hsu@10.88.26.15:29418"]
 	insteadOf = gerrit://main.apbcrdd5.mdt
 [url "ssh://aken.hsu@10.88.26.15:29418"]
 	pushinsteadof = gerrit://main.apbcrdd5.mdt
-
-#[url "ssh://aken.hsu@10.88.26.14:29418"]
-#	insteadOf = gerrit://backup.apbcrdd5.mdt
-#[url "ssh://aken.hsu@10.88.26.14:29418"]
-#	pushinsteadof = gerrit://backup.apbcrdd5.mdt
 
 [color]
 	ui = auto
@@ -34,6 +34,7 @@
 	p-sc20-evb = push origin HEAD:refs/for/sc20-android-quectel-evb
 	p-sc66-dev = push origin HEAD:refs/for/sc66-android-evb-dev
 	p-sc20-dev = push origin HEAD:refs/for/sc20-android-evb-dev
+	p-cv25-dev = push origin HEAD:refs/for/cv25-ambarella-evb-dev
 [push]
 	default = simple
 [core]
