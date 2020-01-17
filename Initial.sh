@@ -77,3 +77,8 @@ function ExeCmd() {
 	echo ${COL_YLW}" ==>" ${COL_GRN}${CMD}${COL_NON}
 	${CMD}
 }
+
+# For android build ccache
+#export USE_CCACHE=1
+#export CCACHE_DIR=/mnt/nfs/CCache
+
