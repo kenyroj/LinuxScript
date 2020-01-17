@@ -27,13 +27,13 @@
 	df = diff --patch
 	stg = diff --staged --patch
 
-	p-oMast = push -u origin master
-	p-rfMast = push origin HEAD:refs/for/master
+	p-mast = push origin HEAD:refs/for/master
 
 	p-sc66-evb = push origin HEAD:refs/for/sc66-android-quectel-evb
 	p-sc20-evb = push origin HEAD:refs/for/sc20-android-quectel-evb
 	p-sc66-dev = push origin HEAD:refs/for/sc66-android-evb-dev
 	p-sc20-dev = push origin HEAD:refs/for/sc20-android-evb-dev
+	p-cv25head = push origin HEAD:refs/heads/cv25-ambarella-evb-dev
 	p-cv25-dev = push origin HEAD:refs/for/cv25-ambarella-evb-dev
 [push]
 	default = simple
