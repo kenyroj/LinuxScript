@@ -35,6 +35,8 @@
 	p-sc20-dev = push origin HEAD:refs/for/sc20-android-evb-dev
 	p-cv25head = push origin HEAD:refs/heads/cv25-ambarella-evb-dev
 	p-cv25-dev = push origin HEAD:refs/for/cv25-ambarella-evb-dev
+	p-n665head = push origin HEAD:refs/heads/n665-dev
+	p-n665-dev = push origin HEAD:refs/for/n665-dev
 [push]
 	default = simple
 [core]
