@@ -1,5 +1,10 @@
 #!/bin/bash
 
+function ListPkg() {
+	SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
+	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${SHORT_HOST}
+}
+
 function KeepNewNFiles() {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 <<Numbers of files to keep>>"
@@ -18,7 +23,7 @@ function ChOwnGrp() {
 }
 
 export GERRIT_USER=aken.hsu
-export GERRIT_HOST=10.88.26.15
+export GERRIT_HOST=10.88.26.14
 function CmdGerrit() {
 	Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} gerrit $*"
 	ExeCmd $Cmd
@@ -105,7 +110,7 @@ function QGitST() {
 }
 
 function RepoSync() {
-	ExeCmd repo sync -cq --no-tags --no-repo-verify -j8 $*
+	ExeCmd repo sync -cq --no-tags --no-repo-verify -j8
 }
 
 function DiskUsage() {
