@@ -109,6 +109,10 @@ function QGitST() {
 	gitSt ${GitPRJ}
 }
 
+function CppChk() {
+	ExeCmd cppcheck --enable=all --inconclusive --std=posix $* 1> /dev/null
+}
+
 function RepoSync() {
 	ExeCmd repo sync -cq --no-tags --no-repo-verify -j8
 }
@@ -116,5 +120,3 @@ function RepoSync() {
 function DiskUsage() {
 	ExeCmd du -h --max-depth=1 $*
 }
-
-
