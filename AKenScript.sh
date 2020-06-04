@@ -110,7 +110,11 @@ function QGitST() {
 }
 
 function CppChk() {
-	ExeCmd cppcheck --enable=all --inconclusive --std=posix $* 1> /dev/null
+	ExeCmd cppcheck --enable=all --inconclusive --std=posix $*
+}
+
+function CppXChk() {
+	ExeCmd cppcheck --enable=all --xml --xml-version=2 $*
 }
 
 function RepoSync() {
