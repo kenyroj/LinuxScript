@@ -5,6 +5,9 @@
 	name = AKen.Hsu
 	email = aken.hsu@mic.com.tw
 
+[url "http://mdt-gerrit01.mic.com.tw:8888/google/git-repo"]
+	insteadOf = https://gerrit.googlesource.com/git-repo
+
 [url "ssh://aken.hsu@mdt-gerrit01.mic.com.tw:29418"]
 	insteadOf = gerrit://main.mdt
 [url "ssh://aken.hsu@mdt-gerrit01.mic.com.tw:29418"]
