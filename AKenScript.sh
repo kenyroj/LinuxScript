@@ -118,7 +118,7 @@ function CppXChk() {
 }
 
 function RepoSync() {
-	ExeCmd repo sync -cq --no-tags --no-repo-verify -j8
+	ExeCmd repo sync -cq --no-tags --no-repo-verify -j8 $*
 }
 
 function DiskUsage() {
