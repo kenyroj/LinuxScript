@@ -23,7 +23,7 @@ function ChOwnGrp() {
 }
 
 export GERRIT_USER=aken.hsu
-export GERRIT_HOST=10.88.26.14
+export GERRIT_HOST=mdt-gerrit01.mic.com.tw
 function CmdGerrit() {
 	Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} gerrit $*"
 	ExeCmd $Cmd
