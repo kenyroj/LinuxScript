@@ -109,6 +109,13 @@ function QGitST() {
 	gitSt ${GitPRJ}
 }
 
+function TopMem() {
+	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%mem | head -$1
+}
+function TopCpu() {
+	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%cpu | head -$1
+}
+
 function CppChk() {
 	ExeCmd cppcheck --enable=all --inconclusive --std=posix $*
 }
