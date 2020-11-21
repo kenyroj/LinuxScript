@@ -3,7 +3,7 @@
 
 # DiskUsage section, the DiskUsage information should be created by crontab
 echo
-cat /data/apbcrdd5/.DiskUsage
+cat /home/.DiskUsage
 
 # Show the weather, need to install 'ansiweather' first.
 #echo
