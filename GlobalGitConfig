@@ -32,15 +32,16 @@
 
 	p-mast = push origin HEAD:refs/for/master
 
-	p-sc66-evb = push origin HEAD:refs/for/sc66-android-quectel-evb
-	p-sc20-evb = push origin HEAD:refs/for/sc20-android-quectel-evb
-	p-sc66-dev = push origin HEAD:refs/for/sc66-android-evb-dev
-	p-sc20-dev = push origin HEAD:refs/for/sc20-android-evb-dev
-	p-cv25head = push origin HEAD:refs/heads/cv25-ambarella-evb-dev
-	p-cv25-dev = push origin HEAD:refs/for/cv25-ambarella-evb-dev
-	p-n665head = push origin HEAD:refs/heads/n665-dev
-	p-n665-dev = push origin HEAD:refs/for/n665-dev
+	p--n677 = push origin HEAD:refs/heads/n677-android-alpha-dev
+	p-n677-dev = push origin HEAD:refs/for/n677-android-alpha-dev
+	p--n685 = push origin HEAD:refs/heads/n685-android-dev
+	p-n685-dev = push origin HEAD:refs/for/n685-android-dev
+	p--n689 = push origin HEAD:refs/heads/n689-android-dev
+	p-n689-dev = push origin HEAD:refs/for/n689-android-dev
+
 [push]
 	default = simple
 [core]
 	editor = vim
+[ssh]
+	variant = ssh
