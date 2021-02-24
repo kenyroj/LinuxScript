@@ -22,6 +22,10 @@ function ChOwnGrp() {
 	chgrp $*
 }
 
+function SmbUser() {
+	ExeCmd pdbedit $*
+}
+
 export GERRIT_USER=aken.hsu
 export GERRIT_HOST=mdt-gerrit01.mic.com.tw
 function CmdGerrit() {
