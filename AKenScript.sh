@@ -129,7 +129,7 @@ function CppXChk() {
 }
 
 function RepoSync() {
-	ExeCmd repo sync -cq --no-tags --no-repo-verify -j4 $*
+	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 $*
 }
 
 function DiskUsage() {
