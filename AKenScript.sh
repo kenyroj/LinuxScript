@@ -23,7 +23,7 @@ function ChOwnGrp() {
 }
 
 function SmbUser() {
-	ExeCmd pdbedit $*
+	ExeCmd pdbedit -L $* | sort
 }
 
 export GERRIT_USER=aken.hsu
@@ -87,7 +87,7 @@ function gitSt() {
 		if [ -d "${EachGit}" ]; then
 			echo " $COLOR_YLW====>$COLOR_NON Checking git:$COLOR_LAK $EachGit $COLOR_NON"
 			cd $EachGit
-			git status | grep modified
+			git ls-files -om
 			cd $CODEROOT
 		else
 			echo " $COLOR_GRY==X project path $COLOR_BLU$EachGit$COLOR_GRY not existed. $COLOR_NON"
@@ -97,20 +97,25 @@ function gitSt() {
 
 function QGitST() {
 	GitPRJ="
-		kernel/msm-4.4
-		kernel/msm-4.9
-		device/yandex
-		device/qcom/sdm660_64
+		kernel/msm-4.14
+		device/qcom/sm6150
+		device/qcom/qssi
 		bootable/bootloader/edk2
-		bootable/bootloader/lk
-		hardware/qcom/display
-		hardware/qcom/camera
 		vendor/qcom/proprietary
+		system/core
 		system/sepolicy
 		device/qcom/sepolicy
 	"
 
 	gitSt ${GitPRJ}
+}
+
+function ExecTime() {
+	BeginTime=`date +%s`
+	$*
+	EndTime=`date +%s`
+	CostTime=`date -d@$((EndTime-BeginTime)) -u +%H:%M:%S`
+	echo " --=== Cost time: $CostTime ===--"
 }
 
 function TopMem() {
