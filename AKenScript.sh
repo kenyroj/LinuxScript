@@ -1,11 +1,11 @@
 #!/bin/bash
 
-function ListPkg() {
+ListPkg() {
 	SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
 	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${SHORT_HOST}
 }
 
-function KeepNewNFiles() {
+KeepNewNFiles() {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 <<Numbers of files to keep>>"
 		exit 1
@@ -17,22 +17,22 @@ function KeepNewNFiles() {
 #	ExeCmd $Cmd
 }
 
-function ChOwnGrp() {
+ChOwnGrp() {
 	chown $*
 	chgrp $*
 }
 
-function SmbUser() {
+SmbUser() {
 	ExeCmd pdbedit -L $* | sort
 }
 
 export GERRIT_USER=aken.hsu
 export GERRIT_HOST=mdt-gerrit01.mic.com.tw
-function CmdGerrit() {
+CmdGerrit() {
 	Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} gerrit $*"
 	ExeCmd $Cmd
 }
-function PushHeadTagByGit() {
+PushHeadTagByGit() {
 	PROJ_NAME=$1
 	for n in $(git for-each-ref --format='%(refname)' refs/heads) ; do
 		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
@@ -46,14 +46,14 @@ function PushHeadTagByGit() {
 	done
 	echo Push heads and tags of $PROJ_NAME Finished.
 }
-function DelGerritProj() {
+DelGerritProj() {
 	for EachGit in $* ; do
 		Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} delete-project delete --yes-really-delete $EachGit"
 		ExeCmd $Cmd
 	done;
 }
 
-function CCat() {
+CCat() {
 	local style="monokai"
 	if [ $# -eq 0 ] ; then
 		pygmentize -P style=$style -P tabsize=4 -f terminal256 -g
@@ -64,7 +64,7 @@ function CCat() {
 	fi
 }
 
-function NoCtrlM () {
+NoCtrlM () {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 filename [filename1 [filename2 ...]]"
 		exit 1
@@ -80,7 +80,7 @@ function NoCtrlM () {
 	done
 }
 
-function gitSt() {
+Gst() {
 	CODEROOT=$PWD
 
 	for EachGit in $GitPRJ ; do
@@ -95,7 +95,11 @@ function gitSt() {
 	done
 }
 
-function QGitST() {
+Glg() {
+	git log --date=format:'%Y%m%d_%H%M%S' --no-merges --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
+}
+
+QGitST() {
 	GitPRJ="
 		kernel/msm-4.14
 		device/qcom/sm6150
@@ -110,7 +114,7 @@ function QGitST() {
 	gitSt ${GitPRJ}
 }
 
-function ExecTime() {
+ExecTime() {
 	BeginTime=`date +%s`
 	$*
 	EndTime=`date +%s`
@@ -118,25 +122,25 @@ function ExecTime() {
 	echo " --=== Cost time: $CostTime ===--"
 }
 
-function TopMem() {
+TopMem() {
 	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%mem | head -$1
 }
-function TopCpu() {
+TopCpu() {
 	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%cpu | head -$1
 }
 
-function CppChk() {
+CppChk() {
 	ExeCmd cppcheck --enable=all --inconclusive --std=posix $*
 }
 
-function CppXChk() {
+CppXChk() {
 	ExeCmd cppcheck --enable=all --xml --xml-version=2 $*
 }
 
-function RepoSync() {
+RepoSync() {
 	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 $*
 }
 
-function DiskUsage() {
+DiskUsage() {
 	ExeCmd du -h --max-depth=1 $*
 }
