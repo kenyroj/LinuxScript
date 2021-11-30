@@ -26,33 +26,6 @@ SmbUser() {
 	ExeCmd pdbedit -L $* | sort
 }
 
-export GERRIT_USER=aken.hsu
-export GERRIT_HOST=mdt-gerrit01.mic.com.tw
-CmdGerrit() {
-	Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} gerrit $*"
-	ExeCmd $Cmd
-}
-PushHeadTagByGit() {
-	PROJ_NAME=$1
-	for n in $(git for-each-ref --format='%(refname)' refs/heads) ; do
-		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
-		Cmd="git push ssh://${GERRIT_USER}@${GERRIT_HOST}:29418/${PROJ_NAME} $n"
-		ExeCmd $Cmd
-	done
-	for n in $(git for-each-ref --format='%(refname)' refs/tags) ; do
-		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
-		Cmd="git push ssh://${GERRIT_USER}@${GERRIT_HOST}:29418/${PROJ_NAME} $n"
-		ExeCmd $Cmd
-	done
-	echo Push heads and tags of $PROJ_NAME Finished.
-}
-DelGerritProj() {
-	for EachGit in $* ; do
-		Cmd="ssh -p 29418 ${GERRIT_USER}@${GERRIT_HOST} delete-project delete --yes-really-delete $EachGit"
-		ExeCmd $Cmd
-	done;
-}
-
 CCat() {
 	local style="monokai"
 	if [ $# -eq 0 ] ; then
