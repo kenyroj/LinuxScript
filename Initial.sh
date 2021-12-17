@@ -67,6 +67,8 @@ elif [ "$USER" = "kenyroj" -o "$USER" = "aken.hsu" ] ; then
 elif [ "$USER" = "mdtuser" ] ; then
 	# if user ID is mdtuser, use Purple time
 	PS_TIME_COLOR=$PSC_PUP
+elif [ "$USER" = "mdtadmin" ] ; then
+	PS_TIME_COLOR=$PSC_WHT
 else
 	# Other users, use Blue time
 	PS_TIME_COLOR=$PSC_BLU
