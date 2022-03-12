@@ -1,6 +1,6 @@
 InitGerrit() {
 	export GerritHost=`grep gerrit01 ~/.gitconfig | grep http | cut -d ':' -f 2 | tr -d '/'`
-	export GerritUser=`grep email ~/.gitconfig | cut -d '=' -f 2 | cut -d '@' -f 1`
+	export GerritUser=`grep email ~/.gitconfig | cut -d '=' -f 2 | cut -d '@' -f 1 | tr -d ' '`
 	echo "==== Your ID: $GerritUser @ $GerritHost"
 }
 
@@ -9,14 +9,14 @@ GrtPushBranch() {
 	export DST=$1
 	repo forall -c 'echo ; \
 		echo [`date +"%m%d-%H%M%S"`] Handle Project: $REPO_PROJECT ; \
-		git diff HEAD origin/$DST --exit-code --quiet ; \
+		git diff HEAD ssh://$GerritUser@$GerritHost:29418/$DST --exit-code --quiet ; \
 		if [ "$?" = "0" ] ; then \
 			echo " ---- Repository is the same ----" \
 		; else \
 			echo " **** Repository was changed!! ****" ; \
-			gitdir=$(git rev-parse --git-dir); scp -p -P 29418 $GerritUser@mdt-gerrit01.mic.com.tw:hooks/commit-msg ${gitdir}/hooks/ ; \
+			gitdir=$(git rev-parse --git-dir); scp -p -P 29418 $GerritUser@$GerritHost:hooks/commit-msg ${gitdir}/hooks/ ; \
 			git commit --amend --no-edit ; \
-			git push origin HEAD:refs/heads/$DST ; \
+			git push ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT HEAD:refs/heads/$DST ; \
 		fi '
 }
 
@@ -59,7 +59,8 @@ GrtDeleteBranch() {
 	echo "DST=$DST"
 
 	repo forall -c 'echo [`date +"%m%d-%H%M%S"`] Delete $DST branch for $REPO_PROJECT;\
-		git push origin --delete $DST'
+		git push ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT --delete $DST'
+
 }
 
 CmdGerrit() {
