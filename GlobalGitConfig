@@ -39,6 +39,8 @@
 	p-689d = push origin HEAD:refs/for/n689-android-dev
 	p--702d = push origin HEAD:refs/heads/n702-android-dev
 	p-702d = push origin HEAD:refs/for/n702-android-dev
+	p--7022 = push origin HEAD:refs/heads/n702-la20-dev
+	p-7022 = push origin HEAD:refs/for/n702-la20-dev
 	p--706d = push origin HEAD:refs/heads/n706-android-dev
 	p-706d = push origin HEAD:refs/for/n706-android-dev
 
