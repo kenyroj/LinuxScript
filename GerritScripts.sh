@@ -4,6 +4,18 @@ InitGerrit() {
 	echo "==== Your ID: $GerritUser @ $GerritHost"
 }
 
+GrtStatus() {
+	InitGerrit
+	export BranchName=$1
+
+	repo forall -c '\
+	GitLog=`git log HEAD ^origin/$BranchName` ; \
+	if [ ! -z "$GitLog" ] ; then \
+		echo "Git LOG of $REPO_PROJECT: $GitLog" ; echo ;\
+	fi \
+'
+}
+
 GrtPushBranch() {
 	InitGerrit
 	export DST=$1
@@ -46,8 +58,8 @@ GrtCloneBranch() {
 	export DST=$2
 	echo "SRC=$SRC, DST=$DST"
 
-	ExeCmd repo init -u gerrit://main.mdt/manifest.git -b $SRC --reference=/mnt/nfs/QCS610AndroidMirror
-	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2
+#	ExeCmd repo init -u gerrit://main.mdt/manifest.git -b $SRC --reference=/mnt/nfs/QCS610AndroidMirror
+#	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2
 
 	repo forall -c 'echo [`date +"%m%d-%H%M%S"`] create $DST branch for $REPO_PROJECT; \
 		ssh -p 29418 $GerritUser@$GerritHost gerrit create-branch $REPO_PROJECT $DST $SRC'
