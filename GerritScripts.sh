@@ -4,7 +4,12 @@ InitGerrit() {
 	echo "==== Your ID: $GerritUser @ $GerritHost"
 }
 
-GrtStatus() {
+GrtLog() {
+	if [ -z $1 ] ; then
+		echo "Usage: Param1: BranchName"
+		return 1
+	fi
+
 	InitGerrit
 	export BranchName=$1
 
@@ -16,7 +21,29 @@ GrtStatus() {
 '
 }
 
+GrtStatus() {
+	if [ -z $1 ] ; then
+		echo "Usage: Param1: BranchName"
+		return 1
+	fi
+
+	InitGerrit
+	export BranchName=$1
+
+	repo forall -c '\
+	GitST=`git status --short` ; \
+	if [ ! -z "$GitST" ] ; then \
+		echo " ==== Git LOG of $REPO_PROJECT:\n $GitST" ; echo ;\
+	fi \
+'
+}
+
 GrtPushBranch() {
+	if [ -z $1 ] ; then
+		echo "Usage: Param1: DST BranchName"
+		return 1
+	fi
+
 	InitGerrit
 	export DST=$1
 	repo forall -c 'echo ; \
@@ -33,6 +60,13 @@ GrtPushBranch() {
 }
 
 GrtMergeBranch() {
+	if [ -z $3 ] ; then
+		echo "Usage: Param1: SRC BranchName"
+		echo "Usage: Param2: DST BranchName"
+		echo "Usage: Param3: CodeNote: FC CS ..."
+		return 1
+	fi
+
 	InitGerrit
 	export SRC=$1
 	export DST=$2
@@ -53,19 +87,27 @@ GrtMergeBranch() {
 }
 
 GrtCloneBranch() {
+	if [ -z $2 ] ; then
+		echo "Usage: Param1: SRC BranchName"
+		echo "Usage: Param2: DST BranchName"
+		return 1
+	fi
+
 	InitGerrit
 	export SRC=$1
 	export DST=$2
 	echo "SRC=$SRC, DST=$DST"
-
-#	ExeCmd repo init -u gerrit://main.mdt/manifest.git -b $SRC --reference=/mnt/nfs/QCS610AndroidMirror
-#	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2
 
 	repo forall -c 'echo [`date +"%m%d-%H%M%S"`] create $DST branch for $REPO_PROJECT; \
 		ssh -p 29418 $GerritUser@$GerritHost gerrit create-branch $REPO_PROJECT $DST $SRC'
 }
 
 GrtDeleteBranch() {
+	if [ -z $1 ] ; then
+		echo "Usage: Param1: DST BranchName"
+		return 1
+	fi
+
 	InitGerrit
 	export DST=$1
 	echo "DST=$DST"
