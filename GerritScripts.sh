@@ -33,7 +33,7 @@ GrtStatus() {
 	repo forall -c '\
 	GitST=`git status --short` ; \
 	if [ ! -z "$GitST" ] ; then \
-		echo " ==== Git LOG of $REPO_PROJECT:\n $GitST" ; echo ;\
+		echo " ==== Git statis of $REPO_PROJECT:" ; echo "$GitST" ; echo ;\
 	fi \
 '
 }
