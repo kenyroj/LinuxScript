@@ -20,10 +20,27 @@
 
 [color]
 	ui = auto
+[color "status"]
+	changed = magenta
+	added = bold green
+	untracked = red
+[color "branch"]
+	local = yellow
+	current = yellow reverse
+	remote = magenta bold
+[color "diff"]
+	frag = magenta bold
+	meta = yellow bold
+	new = green bold
+	old = red bold
+
+[commit]
+	template = ~/.git_template
 
 [alias]
 	co = checkout
 	st = status
+	ss = status --short
 	br = branch
 	cm = commit
 	rst = reset --hard
@@ -32,17 +49,18 @@
 
 	p-mast = push origin HEAD:refs/for/master
 
-	p--aqr = push origin HEAD:refs/heads/qcs610-android-qcom-ref
-	p--lqr = push origin HEAD:refs/heads/qcs610-linux-qcom-ref
+	p--aqr =  push origin HEAD:refs/heads/qcs610-android-qcom-ref
+	p--lqr =  push origin HEAD:refs/heads/qcs610-linux-qcom-ref
 	p--689p = push origin HEAD:refs/heads/n689-android-postcs
-	p-689p = push origin HEAD:refs/for/n689-android-postcs
-	p-689d = push origin HEAD:refs/for/n689-android-dev
+	p-689p =  push origin HEAD:refs/for/n689-android-postcs
+	p--689d =  push origin HEAD:refs/heads/n689-android-dev
+	p-689d =  push origin HEAD:refs/for/n689-android-dev
 	p--702d = push origin HEAD:refs/heads/n702-android-dev
-	p-702d = push origin HEAD:refs/for/n702-android-dev
-	p--7022 = push origin HEAD:refs/heads/n702-la20-dev
-	p-7022 = push origin HEAD:refs/for/n702-la20-dev
+	p-702d =  push origin HEAD:refs/for/n702-android-dev
+	p--7022 = push origin HEAD:refs/heads/n702-android12-dev
+	p-7022 =  push origin HEAD:refs/for/n702-android12-dev
 	p--706d = push origin HEAD:refs/heads/n706-android-dev
-	p-706d = push origin HEAD:refs/for/n706-android-dev
+	p-706d =  push origin HEAD:refs/for/n706-android-dev
 
 [push]
 	default = simple
@@ -50,3 +68,6 @@
 	editor = vim
 [ssh]
 	variant = ssh
+
+[http]
+	followRedirects = true
