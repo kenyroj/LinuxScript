@@ -14,9 +14,9 @@ GrtLog() {
 	export BranchName=$1
 
 	repo forall -c '\
-	GitLog=`git log HEAD ^origin/$BranchName` ; \
+	GitLog=`git log --date=format:"%Y%m%d_%H%M%S" --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" HEAD ^origin/$BranchName` ; \
 	if [ ! -z "$GitLog" ] ; then \
-		echo "Git LOG of $REPO_PROJECT: $GitLog" ; echo ;\
+		echo " ==== Git LOG of $REPO_PROJECT:" ; echo "$GitLog" ; echo ;\
 	fi \
 '
 }
@@ -55,7 +55,7 @@ GrtPushBranch() {
 			echo " **** Repository was changed!! ****" ; \
 			gitdir=$(git rev-parse --git-dir); scp -p -P 29418 $GerritUser@$GerritHost:hooks/commit-msg ${gitdir}/hooks/ ; \
 			git commit --amend --no-edit ; \
-			git push ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT HEAD:refs/heads/$DST ; \
+			git push -f ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT HEAD:refs/heads/$DST ; \
 		fi '
 }
 
