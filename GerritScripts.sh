@@ -22,14 +22,6 @@ GrtLog() {
 }
 
 GrtStatus() {
-	if [ -z $1 ] ; then
-		echo "Usage: Param1: BranchName"
-		return 1
-	fi
-
-	InitGerrit
-	export BranchName=$1
-
 	repo forall -c '\
 	GitST=`git status --short` ; \
 	if [ ! -z "$GitST" ] ; then \
