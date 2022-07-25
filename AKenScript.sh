@@ -111,7 +111,7 @@ CppXChk() {
 }
 
 RepoSync() {
-	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 $*
+	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 --force-sync $*
 }
 
 DiskUsage() {
