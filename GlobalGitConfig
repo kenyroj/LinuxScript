@@ -39,6 +39,7 @@
 
 [alias]
 	co = checkout
+	cp = cherry-pick
 	st = status
 	ss = status --short
 	br = branch
@@ -62,7 +63,9 @@
 	p--7022 = push origin HEAD:refs/heads/n702-android12-dev
 	p-7022 =  push origin HEAD:refs/for/n702-android12-dev
 	p--706d = push origin HEAD:refs/heads/n706-android-dev
+	p--7062 = push origin HEAD:refs/heads/n706-android12-dev
 	p-706d =  push origin HEAD:refs/for/n706-android-dev
+	p-7062 =  push origin HEAD:refs/for/n706-android12-dev
 	p-706p =  push origin HEAD:refs/for/n706-android-pcba
 	p--715d = push origin HEAD:refs/heads/n715-android-dev
 	p-715d = push origin HEAD:refs/for/n715-android-dev
