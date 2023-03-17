@@ -18,10 +18,10 @@ RmForOSS() {
 RmForOpenGrok() {
 	rm -rf oss_report external prebuilts test toolchain tools
 
-	AllItems="alpha arc blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 nios2 openrisc parisc powerpc s390 score sh sparc tile  um unicore32 x86 xtensa"
+	AllItems="BTFM.CHE.2.1.5 BTFM.CMC.1.2.0 MPSS.AT.4.3 VIDEO.VE.5.4 WDSP.9340.3.0 WLAN.HL.3.0.1"
 	for EachItem in $AllItems ; do
-		echo ==== Removing kernel arch: $EachItem
-		rm -rf kernel/msm-4.14/arch/$EachItem
+		echo ==== Removing AMSS: $EachItem
+		rm -rf AMSS/$EachItem
 	done
 
 }
