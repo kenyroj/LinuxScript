@@ -15,7 +15,15 @@ RmForOSS() {
 
 }
 
-RmForOpenGrok() {
+RmForOG_Git() {
+	AllItems="alpha arc blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 nios2 openrisc parisc powerpc s390 score sh sparc tile  um unicore32 x86 xtensa"
+	for EachItem in $AllItems ; do
+		echo ==== Removing kernel arch: $EachItem
+		rm -rf arch/$EachItem
+	done
+
+}
+RmForOG_Repo() {
 	rm -rf oss_report external prebuilts test toolchain tools
 
 	AllItems="BTFM.CHE.2.1.5 BTFM.CMC.1.2.0 MPSS.AT.4.3 VIDEO.VE.5.4 WDSP.9340.3.0 WLAN.HL.3.0.1"
@@ -23,7 +31,6 @@ RmForOpenGrok() {
 		echo ==== Removing AMSS: $EachItem
 		rm -rf AMSS/$EachItem
 	done
-
 }
 
 RmXXDirs() {
