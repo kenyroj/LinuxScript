@@ -58,18 +58,36 @@ Gst() {
 
 	for EachGit in $GitPRJ ; do
 		if [ -d "${EachGit}" ]; then
-			echo " $COLOR_YLW====>$COLOR_NON Checking git:$COLOR_LAK $EachGit $COLOR_NON"
+			echo " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
 			cd $EachGit
-			git ls-files -om
+			# git ls-files -om
+			git status --short
 			cd $CODEROOT
 		else
-			echo " $COLOR_GRY==X project path $COLOR_BLU$EachGit$COLOR_GRY not existed. $COLOR_NON"
+			echo " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
 		fi
 	done
 }
 
+ErrBuild() {
+	if [ -z $1 ] ; then
+		LogName=_Latest.log
+	else
+		LogName=$1
+	fi
+	if [ ! -f $LogName ] ; then
+		echo "File not found: $LogName"
+		return 1
+	fi
+
+	grep -v "object directory" $LogName | grep -v " Could not read" | grep -e "rror:" -e FAIL -e "ERROR:" -e "ISO C90 forbids"
+}
+
 Glg() {
 	git log --date=format:'%Y%m%d_%H%M%S' --no-merges --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
+}
+Glm() {
+	git log --date=format:'%Y%m%d_%H%M%S'             --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
 }
 
 QGitST() {
@@ -84,7 +102,7 @@ QGitST() {
 		device/qcom/sepolicy
 	"
 
-	gitSt ${GitPRJ}
+	Gst ${GitPRJ}
 }
 
 ExecTime() {
