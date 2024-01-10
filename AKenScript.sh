@@ -80,7 +80,7 @@ ErrBuild() {
 		return 1
 	fi
 
-	grep -v "object directory" $LogName | grep -v " Could not read" | grep -e "rror:" -e FAIL -e "ERROR:" -e "ISO C90 forbids"
+	grep -v "object directory" $LogName | grep -v " Could not read" | grep -n -e "rror:" -e FAIL -e "ERROR:" -e "ISO C90 forbids" -e "forbidden warning" -e "neverallow check failed" -e "ERROR 'unknown type" -e "dtbo: ERROR" -e 'out/.lock'
 }
 
 Glg() {
