@@ -80,7 +80,23 @@ ErrBuild() {
 		return 1
 	fi
 
-	grep -v "object directory" $LogName | grep -v " Could not read" | grep -n -e "rror:" -e FAIL -e "ERROR:" -e "ISO C90 forbids" -e "forbidden warning" -e "neverallow check failed" -e "ERROR 'unknown type" -e "dtbo: ERROR" -e 'out/.lock'
+	grep -v "object directory" $LogName \
+		| grep -v 'Following validations failed for the image' \
+		| grep -v 'Image operation has not been enabled' \
+		| grep -v 'Image operation failed for image' \
+		| grep -v 'python command returned error' \
+		| grep -v 'Traceback (most recent call last)'  \
+		| grep -v " Could not read" \
+		| grep -n \
+			-e "rror:" \
+			-e FAIL \
+			-e "ERROR:" \
+			-e "ISO C90 forbids" \
+			-e "forbidden warning" \
+			-e "neverallow check failed" \
+			-e "ERROR 'unknown type" \
+			-e "dtbo: ERROR" \
+			-e 'out/\.lock'
 }
 
 Glg() {
