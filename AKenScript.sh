@@ -87,6 +87,7 @@ ErrBuild() {
 		| grep -v 'python command returned error' \
 		| grep -v 'Traceback (most recent call last)'  \
 		| grep -v " Could not read" \
+		| grep -v " TEMP_FAILURE_RETRY" \
 		| grep -n \
 			-e "rror:" \
 			-e FAIL \
@@ -96,6 +97,7 @@ ErrBuild() {
 			-e "neverallow check failed" \
 			-e "ERROR 'unknown type" \
 			-e "dtbo: ERROR" \
+			-e "No space left on device" \
 			-e 'out/\.lock'
 }
 
