@@ -67,8 +67,11 @@
 	p-706d =  push origin HEAD:refs/for/n706-android-dev
 	p-7062 =  push origin HEAD:refs/for/n706-android12-dev
 	p-706p =  push origin HEAD:refs/for/n706-android-pcba
-	p--715d = push origin HEAD:refs/heads/n715-android-dev
-	p-715d = push origin HEAD:refs/for/n715-android-dev
+	p--748d = push origin HEAD:refs/heads/n748-android13-dev
+	p-748d = push origin HEAD:refs/for/n748-android13-dev
+	p--xd =  push origin HEAD:refs/heads/sg560d-android13-quectel_ref
+	p--sg =  push origin HEAD:refs/heads/sg560devb-android13-dev
+	p-sg =   push origin HEAD:refs/for/sg560devb-android13-dev
 
 
 [push]
@@ -80,3 +83,4 @@
 
 [http]
 	followRedirects = true
+	postbuffer=5242880000
