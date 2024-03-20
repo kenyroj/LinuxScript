@@ -90,9 +90,9 @@ ErrBuild() {
 		| grep -v " TEMP_FAILURE_RETRY" \
 		| grep -v " DEBUG_PRINT" \
 		| grep -n \
-			-e "rror:" \
+			-e " error:" \
+			-e " ERROR:" \
 			-e FAIL \
-			-e "ERROR:" \
 			-e "ISO C90 forbids" \
 			-e "forbidden warning" \
 			-e "neverallow check failed" \
