@@ -88,6 +88,7 @@ ErrBuild() {
 		| grep -v 'Traceback (most recent call last)'  \
 		| grep -v " Could not read" \
 		| grep -v " TEMP_FAILURE_RETRY" \
+		| grep -v " DEBUG_PRINT" \
 		| grep -n \
 			-e "rror:" \
 			-e FAIL \
