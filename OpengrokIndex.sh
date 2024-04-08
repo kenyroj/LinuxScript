@@ -3,12 +3,10 @@
 # in crontab, PATH was modified and need to add
 export PATH=/usr/local/sbin:/usr/local/bin:$PATH
 # export PATH=/usr/lib/jvm/jdk-11.0.6/bin:/usr/local/sbin:/usr/local/bin:$PATH
-which java
 
 OPENGROK_HOME=/data/OpenGROK
 
 LogWithTime() {
-	# echo [`date +"%m%d-%H%M%S"`] "$*"
 	echo [`date +"%m%d-%H%M%S"`] "$*" >> $LOG_FILE 2>&1
 }
 
@@ -37,7 +35,7 @@ OpenGrokIndex() {
 }
 
 ModifyHomepageImfo() {
-	sed -i "/$ProjectName/c <td class=\"name\"><a href=\"../$ProjectName\">$ProjectName</a></td><td>$1</td><td>$2</td>" /var/lib/tomcat9/webapps/opengrok/index.html
+	sed -i "/$ProjectName/c <td class=\"name\"><a href=\"../$ProjectName\">$ProjectName</a></td><td>$1</td><td>$2</td>" /opt/tomcat/webapps/opengrok/index.html
 }
 
 CheckIndexOKorRestoreTemp() {
@@ -89,9 +87,11 @@ PreRepoSync() {
 	if [ -z $Manifest ] ; then Manifest="default.xml" ; fi
 
 	git co .
-	git pull
+	repo sync ../../MiTacBuild/
 
-	sed -i '/name=\"kernel\/msm-/d' $Manifest
+#	sed -i '/name=\"kernel\/msm-/d' $Manifest
+#	sed -i '/path=\"bootable\/bootloader\/edk2/d' $Manifest
+#	sed -i '/path=\"vendor\/qcom\/proprietary/d' $Manifest
 	sed -i '/name=\"platform\/cts/d' $Manifest
 	sed -i '/name=\"platform\/external/d' $Manifest
 	sed -i '/name=\"platform\/prebuilts/d' $Manifest
@@ -102,14 +102,12 @@ PreRepoSync() {
 	sed -i '/name=\"toolchain/d' $Manifest
 	sed -i '/path=\"art/d' $Manifest
 	sed -i '/path=\"bionic/d' $Manifest
-	sed -i '/path=\"bootable\/bootloader\/edk2/d' $Manifest
 	sed -i '/path=\"dalvik/d' $Manifest
 	sed -i '/path=\"developers/d' $Manifest
 	sed -i '/path=\"development/d' $Manifest
 	sed -i '/path=\"shortcut-fe/d' $Manifest
 	sed -i '/path=\"test/d' $Manifest
 	sed -i '/path=\"tools/d' $Manifest
-	sed -i '/path=\"vendor\/qcom\/proprietary/d' $Manifest
 	sed -i '/name=\"kernel\/configs/d' $Manifest
 	sed -i '/name=\"kernel\/tests/d' $Manifest
 	sed -i '/name=\"qcom\/nhlos\/btfm_proc/d' $Manifest
@@ -118,6 +116,7 @@ PreRepoSync() {
 	sed -i '/name=\"qcom\/nhlos\/wdsp_proc/d' $Manifest
 	sed -i '/name=\"qcom\/nhlos\/wlan_proc/d' $Manifest
 	sed -i '/name=\"mitac\/region_image/d' $Manifest
+	sed -i '/name=\"quectel\/android\/unpacktool/d' $Manifest
 	sed -i '/<linkfile /d' $Manifest
 	
 	rm -rf sdk
@@ -129,6 +128,8 @@ PreIndex() {
 
 	cd $SRC_PATH
 	rm -f opengrok*
+
+	find . -name *.json | grep -i test | xargs rm
 }
 
 PostIndex() {
@@ -154,7 +155,7 @@ Main() {
 		BeginTime=`date +%s`
 
 		ProjectName=$EachPrj
-		echo ProjectName=$ProjectName
+		echo Handle Project: $ProjectName
 
 		SRC_PATH=${OPENGROK_HOME}/source/"$ProjectName"
 		SRC_DATA=${OPENGROK_HOME}/data/"$ProjectName"
