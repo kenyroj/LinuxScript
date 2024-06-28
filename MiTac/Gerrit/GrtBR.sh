@@ -27,7 +27,7 @@ if [ "$1" == "" ] ; then
 elif [ "$1" == "B" -o "$1" == "b" ] ; then 
 	Backup
 elif [ "$1" == "R" -o "$1" == "r" ] ; then 
-	echo RRRR
+	Restore
 else
 	echo Wrong param
 	Usage
