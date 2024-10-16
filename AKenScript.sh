@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Param1: StartSec
+CaculateDuration() {
+	local StartSec=$1
+	local EndSec=`date +%s.%N`
+	local ElapsedSec=$(echo "$EndSec - $StartSec" | bc)
+	local BuildMin=$(echo "$ElapsedSec / 60" | bc)
+	local BuildSec=$(echo "$ElapsedSec % 60" | bc)
+	printf "%02d:%05.2f" $BuildMin $BuildSec
+}
+
 ListPkg() {
 	SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
 	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${SHORT_HOST}
@@ -80,7 +90,7 @@ ErrBuild() {
 		return 1
 	fi
 
-	grep -v "object directory" $LogName \
+	grep -n -v "object directory" $LogName \
 		| grep -v 'Following validations failed for the image' \
 		| grep -v 'Image operation has not been enabled' \
 		| grep -v 'Image operation failed for image' \
@@ -89,12 +99,16 @@ ErrBuild() {
 		| grep -v " Could not read" \
 		| grep -v " TEMP_FAILURE_RETRY" \
 		| grep -v " DEBUG_PRINT" \
-		| grep -n \
+		| grep -v "liberror" \
+		| grep -v "thiserror" \
+		| grep \
 			-e " error:" \
 			-e " ERROR:" \
 			-e FAIL \
+			-e "syntax error" \
 			-e "ISO C90 forbids" \
 			-e "forbidden warning" \
+			-e "neverallow on line" \
 			-e "neverallow check failed" \
 			-e "ERROR 'unknown type" \
 			-e "dtbo: ERROR" \
@@ -148,7 +162,9 @@ CppXChk() {
 }
 
 RepoSync() {
+	local StartSec=`date +%s.%N`
 	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 --force-sync $*
+	echo "==== Total costs: $(CaculateDuration $StartSec) Sec."
 }
 
 DiskUsage() {
