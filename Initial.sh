@@ -80,7 +80,7 @@ export PS1='${?/#0/}'"${PSC_LAK}${SHORT_HOST}${PSC_NON}:${PSC_GRN}\w${PSC_NON}[$
 
 function ExeCmd() {
 	CMD=$*
-	echo ${COL_GRN}" ==>" ${COL_YLW}${CMD}${COL_NON}
+	echo -e ${COL_GRN}" ==>" ${COL_YLW}${CMD}${COL_NON}
 	${CMD}
 }
 

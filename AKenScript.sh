@@ -68,13 +68,13 @@ Gst() {
 
 	for EachGit in $GitPRJ ; do
 		if [ -d "${EachGit}" ]; then
-			echo " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
+			echo -e " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
 			cd $EachGit
 			# git ls-files -om
 			git status --short
 			cd $CODEROOT
 		else
-			echo " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
+			echo -e " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
 		fi
 	done
 }
@@ -164,7 +164,7 @@ CppXChk() {
 RepoSync() {
 	local StartSec=`date +%s.%N`
 	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 --force-sync $*
-	echo "==== Total costs: $(CaculateDuration $StartSec) Sec."
+	echo -e "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
 }
 
 DiskUsage() {
