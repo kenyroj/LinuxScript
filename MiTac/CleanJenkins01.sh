@@ -20,10 +20,30 @@ Main() {
 	AllDir+="n868-ubuntu22-dev/ n868-yocto40-dev/ "
 	AllDir+="n875-l5.15.32_u22-dev/ n875-l5.15.32_y40-dev/ n875-l6.01.36_u22-dev/ n875-l6.01.55_u22-dev/ n875-l6.01.55_y50-dev/ n875-yocto40-dev/ "
 	AllDir+="n748-android13-dev sg560devb-android13-dev "
+
 	AllDir+="n702-android-aapexdemo "
-	AllDir+="n702-android-bms n702-android-dev n702-android-bms n702-android-smarterai n702-android-tn "
-	AllDir+="n706-android-dev/ n706-android-onaz_a/ n706-android-onaz_d/ n706-android-pcba/ n706-android-testota_onaz_a/ n706-android-testota_onaz_d/ "
-	AllDir+="n689-android-axis/ n689-android-b2b/ n689-android-dd/ n689-android-dev/ n689-android-pcba/ n689-android-rel/ n689-android-testota/ n689-android-testota_axi "
+	AllDir+="n702-android-smarterai "
+	AllDir+="n702-android-dev "
+	AllDir+="n702-android-bms "
+	AllDir+="n702-android-tn "
+	AllDir+="n702-android-5g "
+	AllDir+="n702-android-geotab "
+
+	AllDir+="n706-android-dev/ "
+	AllDir+="n706-android-onaz_a/ "
+	AllDir+="n706-android-onaz_d/ "
+	AllDir+="n706-android-pcba/ "
+	AllDir+="n706-android-testota_onaz_a/ "
+	AllDir+="n706-android-testota_onaz_d/ "
+
+	AllDir+="n689-android-axis/ "
+	AllDir+="n689-android-b2b/ "
+	AllDir+="n689-android-dd/ "
+	AllDir+="n689-android-dev/ "
+	AllDir+="n689-android-pcba/ "
+	AllDir+="n689-android-go/ "
+	AllDir+="n689-android-testota/ "
+	AllDir+="n689-android-testota_axi "
 	for EachDir in $AllDir ; do
 		echo DIR: $EachDir
 		RunAndLog python3 /data/aken.hsu/script/DeleteOldFile.py /data/Images/$EachDir/custom/	$CM_KEEP_DAY $IsDelete
