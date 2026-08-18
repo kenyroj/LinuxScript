@@ -1,23 +1,23 @@
-# Modify the prefix key of tmux from C-b to C-w
-set -g prefix C-w
+# Modify the prefix key of tmux from C-b to C-a
+set -g prefix C-a
 unbind C-b
 
 # Prefix + C-r to reload the tmux.conf and show message.
 bind C-r source-file ~/.tmux.conf \; display "Tmux settings Reloaded!"
 
-# Use | and - to split a window vertically and horizontally instead of " and % respoectively
+# Use | and - to split a window vertically and horizontally instead of " and % respectively
 unbind '"'
 unbind %
 bind | split-window -h -c "#{pane_current_path}"
 bind - split-window -v -c "#{pane_current_path}"
 
 # Move the cursor between panes like vim
-bind-key k select-pane -U 
+bind-key k select-pane -U
 bind-key j select-pane -D
 bind-key h select-pane -L
 bind-key l select-pane -R
 
-# Switch betewen panes using alt + arrow
+# Switch between panes using alt + arrow
 bind -n M-Left select-pane -L
 bind -n M-Right select-pane -R
 bind -n M-Up select-pane -U
@@ -34,14 +34,40 @@ bind -n S-Up copy-mode
 set -g base-index 1
 set -g pane-base-index 1
 
-# Make tmux support 256 Color, Need to add alias: alias tmux='tmux -2'
-set -g default-terminal "screen-256color"
+# Renumber windows sequentially after closing one (uncomment to enable)
+# set -g renumber-windows on
+
+# for Claude alarm
+set -g focus-events on
+
+# Reduce ESC key delay (default 500ms causes lag in vim)
+set -sg escape-time 10
+
+# Enable mouse support (scroll, click to select pane/window)
+set -g mouse on
+
+# Make tmux support true color (24-bit); requires tmux-256color terminfo
+# Verify with: infocmp tmux-256color
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ",*256col*:Tc"
 
 # Increase the scroll buffer size from 2000 to ...
 set-option -g history-limit 100000
 
+# Update status bar every 5 seconds (default is 15)
+set -g status-interval 5
+
+# Highlight windows with activity in the status bar
+set -g monitor-activity on
+set -g visual-activity off
+
+# Vi-style copy mode
+set-window-option -g mode-keys vi
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+
 ##########################
-# Sytle
+# Style
 ##########################
 
 # Default statusbar color
