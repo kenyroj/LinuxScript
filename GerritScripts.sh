@@ -91,6 +91,7 @@ GrtCloneBranch() {
 	echo "SRC=$SRC, DST=$DST"
 
 	repo forall -c 'echo [`date +"%m%d-%H%M%S"`] create $DST branch for $REPO_PROJECT; \
+		git checkout -b $SRC ; \
 		ssh -p 29418 $GerritUser@$GerritHost gerrit create-branch $REPO_PROJECT $DST $SRC'
 }
 
@@ -131,7 +132,7 @@ PushHeadTagByGit() {
 	echo Push heads and tags of $PROJ_NAME Finished.
 }
 
-DelGerritProj() {
+GrtDelRepo() {
 	InitGerrit
 	for EachGit in $* ; do
 		Cmd="ssh -p 29418 ${GerritUser}@${GerritHost} delete-project delete --yes-really-delete $EachGit"
@@ -139,3 +140,22 @@ DelGerritProj() {
 	done;
 }
 
+CreateRepo() {
+	REPO_PROJECT=$1
+	OWNER=MDT_Member
+	PARENT_PRJ=MDT_Project
+	BRANCH_NAME=sg560d-android13-quectel_ref
+	echo [`date +"%m%d-%H%M%S"`] Create Project and Set Owner: $REPO_PROJECT; ssh -p 29418 $GerritUser@$GerritHost gerrit create-project --owner $OWNER $REPO_PROJECT
+	echo [`date +"%m%d-%H%M%S"`] Set Parent Project: $REPO_PROJECT; ssh -p 29418 $GerritUser@$GerritHost gerrit set-project-parent --parent $PARENT_PRJ $REPO_PROJECT
+}
+
+RmRepo() {
+	REPO_PROJECT=$1
+	echo [`date +"%m%d-%H%M%S"`] Delete Repository: $REPO_PROJECT; ssh -p 29418 ${GerritUser}@${GerritHost} delete-project delete --yes-really-delete $REPO_PROJECT
+}
+
+NewBranch() {
+	BRANCH_NAME=sg560d-android13-quectel_ref
+	REPO_PROJECT=$1
+	echo [`date +"%m%d-%H%M%S"`] New branch on Repository: $BRANCH_NAME - $REPO_PROJECT ; ssh -p 29418 ${GerritUser}@${GerritHost} gerrit create-branch $REPO_PROJECT $BRANCH_NAME master
+}
