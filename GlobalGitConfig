@@ -1,6 +1,3 @@
-[credential]
-	helper = store
-
 [user]
 	name = AKen.Hsu
 	email = aken.hsu@mic.com.tw
@@ -84,3 +81,5 @@
 [http]
 	followRedirects = true
 	postbuffer=5242880000
+[credential]
+	helper = store
