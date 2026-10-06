@@ -2,7 +2,7 @@
 
 LocalPath="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-source $LocalPath/ColorAnsiBash.sh
+source $LocalPath/Common.sh
 
 source $LocalPath/AKenScript.sh
 
@@ -57,7 +57,7 @@ function CollapsedPWD() {
 }
 
 # Set PROMPT
-SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
+SHORT_HOST=${HOSTNAME##*-}
 PS_TIME_COLOR=$(PSC_RGB 208)
 if [ $UID = 0 ] ; then
 	# if user is root, use Red time
@@ -77,12 +77,6 @@ fi
 export PS1='${?/#0/}'"${PSC_LAK}${SHORT_HOST}${PSC_NON}:${PSC_GRN}\w${PSC_NON}[$PS_TIME_COLOR\A${PSC_NON}] "
 
 #PS1="\[\e]0;\u@\h\a\]$PS1" # Change the putty title
-
-function ExeCmd() {
-	CMD=$*
-	echo -e ${COL_GRN}" ==>" ${COL_YLW}${CMD}${COL_NON}
-	${CMD}
-}
 
 # custom colored ls
 CUS_LS_COLORS='rs=0:

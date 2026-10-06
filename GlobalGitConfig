@@ -44,6 +44,8 @@
 	rst = reset --hard
 	df = diff --patch
 	stg = diff --staged --patch
+	lg = log --date=format:%Y%m%d_%H%M%S --pretty=ak --no-merges
+	lgm = log --date=format:%Y%m%d_%H%M%S --pretty=ak
 
 	p-mast = push origin HEAD:refs/for/master
 
@@ -70,6 +72,9 @@
 	p--sg =  push origin HEAD:refs/heads/sg560devb-android13-dev
 	p-sg =   push origin HEAD:refs/for/sg560devb-android13-dev
 
+
+[pretty]
+	ak = "format:%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s"
 
 [push]
 	default = simple

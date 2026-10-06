@@ -6,8 +6,10 @@ export PATH=/usr/local/sbin:/usr/local/bin:$PATH
 
 OPENGROK_HOME=/data/OpenGROK
 
+source "$( dirname "${BASH_SOURCE[0]}" )/Common.sh"
+
 LogWithTime() {
-	echo [`date +"%m%d-%H%M%S"`] "$*" >> $LOG_FILE 2>&1
+	echo [`Ts`] "$*" >> $LOG_FILE 2>&1
 }
 
 OpenGrokIndex() {
@@ -73,7 +75,7 @@ RepoSyncProj() {
 		git pull >> $LOG_FILE 2>&1
 	elif [ -d ".repo" ] ; then
 		LogWithTime "Found .repo, execute: repo sync ..."
-		repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 >> $LOG_FILE 2>&1
+		repo sync $REPO_SYNC_OPTS >> $LOG_FILE 2>&1
 	else
 		LogWithTime "No need to update codebase for $ProjectName"
 	fi
@@ -162,8 +164,6 @@ Main() {
 		TMP_DATA=${OPENGROK_HOME}/data/"$ProjectName"_tmp
 		SRC_CONF=${OPENGROK_HOME}/etc/"$ProjectName".xml
 		TMP_CONF=${OPENGROK_HOME}/etc/"$ProjectName"_tmp.xml
-		TMP_FOLDER=${OPENGROK_HOME}/.temp
-		SkipFolders="art bionic dalvik developers development disregard external libcore libnativehelper pdk platform_testing prebuilts sdk shortcut-fe test toolchain tools"
 
 		INDEX_JOB_TIME=`date +"%Y%m%d-%H%M%S"`
 		LOG_FILE=${OPENGROK_HOME}/log/"$INDEX_JOB_TIME"-"$ProjectName".log

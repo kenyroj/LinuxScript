@@ -14,7 +14,7 @@ GrtLog() {
 	export BranchName=$1
 
 	repo forall -c '\
-	GitLog=`git log --date=format:"%Y%m%d_%H%M%S" --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" HEAD ^origin/$BranchName` ; \
+	GitLog=`git lgm HEAD ^origin/$BranchName` ; \
 	if [ ! -z "$GitLog" ] ; then \
 		echo " ==== Git LOG of $REPO_PROJECT:" ; echo "$GitLog" ; echo ;\
 	fi \
@@ -110,52 +110,73 @@ GrtDeleteBranch() {
 
 }
 
+# Run a command on the Gerrit server through ssh
+GrtSsh() {
+	ssh -p 29418 ${GerritUser}@${GerritHost} "$@"
+}
+
 CmdGerrit() {
 	InitGerrit
-	Cmd="ssh -p 29418 ${GerritUser}@${GerritHost} gerrit $*"
-	ExeCmd $Cmd
+	ExeCmd GrtSsh gerrit "$@"
 }
 
 PushHeadTagByGit() {
+	if [ -z "$1" ] ; then
+		echo "Usage: Param1: Project name on Gerrit"
+		return 1
+	fi
+
 	InitGerrit
-	PROJ_NAME=$1
-	for n in $(git for-each-ref --format='%(refname)' refs/heads) ; do
-		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
-		Cmd="git push ssh://${GerritUser}@${GerritHost}:29418/${PROJ_NAME} $n"
-		ExeCmd $Cmd
-	done
-	for n in $(git for-each-ref --format='%(refname)' refs/tags) ; do
-		echo [`date +"%m%d-%H%M%S"`] - $n @ $PROJ_NAME
-		Cmd="git push ssh://${GerritUser}@${GerritHost}:29418/${PROJ_NAME} $n"
-		ExeCmd $Cmd
-	done
-	echo Push heads and tags of $PROJ_NAME Finished.
+	local PROJ_NAME=$1
+	echo [`Ts`] Push heads and tags of $PROJ_NAME
+	ExeCmd git push ssh://${GerritUser}@${GerritHost}:29418/${PROJ_NAME} 'refs/heads/*' 'refs/tags/*'
 }
 
 GrtDelRepo() {
+	if [ $# -eq 0 ] ; then
+		echo "Usage: Param1..N: Project names on Gerrit to DELETE"
+		return 1
+	fi
+
 	InitGerrit
-	for EachGit in $* ; do
-		Cmd="ssh -p 29418 ${GerritUser}@${GerritHost} delete-project delete --yes-really-delete $EachGit"
-		ExeCmd $Cmd
-	done;
+	local Answer
+	read -p "Really delete $* on $GerritHost? [y/N] " Answer
+	[ "$Answer" = "y" -o "$Answer" = "Y" ] || return 1
+
+	for EachGit in "$@" ; do
+		echo [`Ts`] Delete Repository: $EachGit
+		ExeCmd GrtSsh delete-project delete --yes-really-delete $EachGit
+	done
 }
 
 CreateRepo() {
-	REPO_PROJECT=$1
-	OWNER=MDT_Member
-	PARENT_PRJ=MDT_Project
-	BRANCH_NAME=sg560d-android13-quectel_ref
-	echo [`date +"%m%d-%H%M%S"`] Create Project and Set Owner: $REPO_PROJECT; ssh -p 29418 $GerritUser@$GerritHost gerrit create-project --owner $OWNER $REPO_PROJECT
-	echo [`date +"%m%d-%H%M%S"`] Set Parent Project: $REPO_PROJECT; ssh -p 29418 $GerritUser@$GerritHost gerrit set-project-parent --parent $PARENT_PRJ $REPO_PROJECT
-}
+	if [ -z "$1" ] ; then
+		echo "Usage: Param1: Project name to create on Gerrit"
+		return 1
+	fi
 
-RmRepo() {
-	REPO_PROJECT=$1
-	echo [`date +"%m%d-%H%M%S"`] Delete Repository: $REPO_PROJECT; ssh -p 29418 ${GerritUser}@${GerritHost} delete-project delete --yes-really-delete $REPO_PROJECT
+	InitGerrit
+	local REPO_PROJECT=$1
+	local OWNER=MDT_Member
+	local PARENT_PRJ=MDT_Project
+	echo [`Ts`] Create Project and Set Owner: $REPO_PROJECT
+	GrtSsh gerrit create-project --owner $OWNER $REPO_PROJECT
+	echo [`Ts`] Set Parent Project: $REPO_PROJECT
+	GrtSsh gerrit set-project-parent --parent $PARENT_PRJ $REPO_PROJECT
 }
 
 NewBranch() {
-	BRANCH_NAME=sg560d-android13-quectel_ref
-	REPO_PROJECT=$1
-	echo [`date +"%m%d-%H%M%S"`] New branch on Repository: $BRANCH_NAME - $REPO_PROJECT ; ssh -p 29418 ${GerritUser}@${GerritHost} gerrit create-branch $REPO_PROJECT $BRANCH_NAME master
+	if [ -z "$2" ] ; then
+		echo "Usage: Param1: Project name on Gerrit"
+		echo "Usage: Param2: New BranchName"
+		echo "Usage: Param3: From BranchName (default: master)"
+		return 1
+	fi
+
+	InitGerrit
+	local REPO_PROJECT=$1
+	local BRANCH_NAME=$2
+	local FROM_BRANCH=${3:-master}
+	echo [`Ts`] New branch on Repository: $BRANCH_NAME - $REPO_PROJECT
+	GrtSsh gerrit create-branch $REPO_PROJECT $BRANCH_NAME $FROM_BRANCH
 }

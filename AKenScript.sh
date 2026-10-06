@@ -1,18 +1,7 @@
 #!/bin/bash
 
-# Param1: StartSec
-CaculateDuration() {
-	local StartSec=$1
-	local EndSec=`date +%s.%N`
-	local ElapsedSec=$(echo "$EndSec - $StartSec" | bc)
-	local BuildMin=$(echo "$ElapsedSec / 60" | bc)
-	local BuildSec=$(echo "$ElapsedSec % 60" | bc)
-	printf "%02d:%05.2f" $BuildMin $BuildSec
-}
-
 ListPkg() {
-	SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
-	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${SHORT_HOST}
+	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${HOSTNAME##*-}
 }
 
 KeepNewNFiles() {
@@ -116,11 +105,12 @@ ErrBuild() {
 			-e 'out/\.lock'
 }
 
+# git lg / git lgm are defined in GlobalGitConfig
 Glg() {
-	git log --date=format:'%Y%m%d_%H%M%S' --no-merges --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
+	git lg "$@"
 }
 Glm() {
-	git log --date=format:'%Y%m%d_%H%M%S'             --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
+	git lgm "$@"
 }
 
 QGitST() {
@@ -139,11 +129,9 @@ QGitST() {
 }
 
 ExecTime() {
-	BeginTime=`date +%s`
-	$*
-	EndTime=`date +%s`
-	CostTime=`date -d@$((EndTime-BeginTime)) -u +%H:%M:%S`
-	echo " --=== Cost time: $CostTime ===--"
+	local StartSec=`date +%s.%N`
+	"$@"
+	echo " --=== Cost time: $(CaculateDuration $StartSec) ===--"
 }
 
 TopMem() {
@@ -163,7 +151,7 @@ CppXChk() {
 
 RepoSync() {
 	local StartSec=`date +%s.%N`
-	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 --force-sync $*
+	ExeCmd repo sync $REPO_SYNC_OPTS --force-sync $*
 	echo -e "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
 }
 

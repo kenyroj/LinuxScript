@@ -1,3 +1,5 @@
+NoUseArchList="alpha arc blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 nios2 openrisc parisc powerpc s390 score sh sparc tile um unicore32 x86 xtensa"
+
 RmForOSS() {
 	rm -rf external/autotest
 	rm -rf kernel/msm-4.14/tools/testing/
@@ -16,12 +18,7 @@ RmForOSS() {
 }
 
 RmForOG_Git() {
-	AllItems="alpha arc blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 nios2 openrisc parisc powerpc s390 score sh sparc tile  um unicore32 x86 xtensa"
-	for EachItem in $AllItems ; do
-		echo ==== Removing kernel arch: $EachItem
-		rm -rf arch/$EachItem
-	done
-
+	RmNoUseArch .
 }
 RmForOG_Repo() {
 	rm -rf oss_report external prebuilts test toolchain tools
@@ -63,11 +60,12 @@ RmSymLinks() {
 	find -L . -xtype l | xargs rm -v
 }
 
+# Param1: kernel path (default: kernel/msm-4.14)
 RmNoUseArch() {
-	AllItems="alpha arc blackfin c6x cris frv h8300 hexagon ia64 m32r m68k metag microblaze mips mn10300 nios2 openrisc parisc powerpc s390 score sh sparc tile  um unicore32 x86 xtensa"
-	for EachItem in $AllItems ; do
+	local KernelPath=${1:-kernel/msm-4.14}
+	for EachItem in $NoUseArchList ; do
 		echo ==== Removing kernel arch: $EachItem
-		rm -rf kernel/msm-4.14/arch/$EachItem
+		rm -rf $KernelPath/arch/$EachItem
 	done
 }
 
