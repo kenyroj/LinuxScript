@@ -12,7 +12,7 @@ Ts() {
 
 # Print the command and run it
 ExeCmd() {
-	echo -e "${COL_GRN} ==> ${COL_YLW}$*${COL_NON}"
+	echo "${COL_GRN} ==> ${COL_YLW}$*${COL_NON}"
 	"$@"
 }
 

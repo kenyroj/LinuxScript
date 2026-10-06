@@ -56,10 +56,10 @@ NoCtrlM () {
 Gst() {
 	for EachGit in "$@" ; do
 		if [ -d "${EachGit}" ]; then
-			echo -e " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
+			echo " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
 			git -C "$EachGit" status --short
 		else
-			echo -e " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
+			echo " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
 		fi
 	done
 }
@@ -133,7 +133,7 @@ CppXChk() {
 RepoSync() {
 	local StartSec=`date +%s.%N`
 	ExeCmd repo sync $REPO_SYNC_OPTS --force-sync $*
-	echo -e "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
+	echo "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
 }
 
 DiskUsage() {

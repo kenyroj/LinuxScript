@@ -24,26 +24,26 @@ fi
 # ==== Sync the Global gitconfig setting ====
 echo
 echo ========
-echo -e ${COL_YLW}"Check the Global gitconfig is linked"${COL_NON}", command:"
-echo -e ${COL_GRN}"ln -s $ThisDir/GlobalGitConfig ~/.gitconfig"${COL_NON}
+echo ${COL_YLW}"Check the Global gitconfig is linked"${COL_NON}", command:"
+echo ${COL_GRN}"ln -s $ThisDir/GlobalGitConfig ~/.gitconfig"${COL_NON}
 
 # ==== Add local git config for GitHub,  in .get/config ====
 echo
 echo ========
-echo -e ${COL_YLW}"Add local git config for GitHub"${COL_NON}", in .get/config"
-echo -e ${COL_GRN}"[user]"
+echo ${COL_YLW}"Add local git config for GitHub"${COL_NON}", in .get/config"
+echo ${COL_GRN}"[user]"
 echo "	name = kenyroj"
 echo "	email = kenyroj@gmail.com"
-echo -e "	username = kenyroj"${COL_NON}
+echo "	username = kenyroj"${COL_NON}
 
 # ==== Sync the Tmux setting ====
 echo
 echo ========
-echo -e ${COL_YLW}"Check the tmux setting is linked"${COL_NON}", command:"
-echo -e ${COL_GRN}"ln -s $ThisDir/TmuxConfig ~/.tmux.conf"${COL_NON}
+echo ${COL_YLW}"Check the tmux setting is linked"${COL_NON}", command:"
+echo ${COL_GRN}"ln -s $ThisDir/TmuxConfig ~/.tmux.conf"${COL_NON}
 
 # ==== Sync the vimrc setting ====
 echo
 echo ========
-echo -e ${COL_YLW}"Check the vimrc setting is linked"${COL_NON}", command:"
-echo -e ${COL_GRN}"ln -s $ThisDir/VimRC ~/.vimrc"${COL_NON}
+echo ${COL_YLW}"Check the vimrc setting is linked"${COL_NON}", command:"
+echo ${COL_GRN}"ln -s $ThisDir/VimRC ~/.vimrc"${COL_NON}
