@@ -1,9 +1,5 @@
 #!/bin/bash
-# Shows UsedSpace(in Byte)
+# Shows available space (in KB) of data disk (vg1-lv1) and root
 
-#Used=$((`df -k | grep data$ | sed 's/  */ /g' | cut -d ' ' -f 3` * 1))
-#Total=$((`df -k | grep data$ | sed 's/  */ /g' | cut -d ' ' -f 2` * 1))
-AvailData=$((`df -l -k | grep vg1-lv1 | sed 's/  */ /g' | cut -d ' ' -f 4`))
-AvailRoot=$((`df -l -k | grep /$ | sed 's/  */ /g' | cut -d ' ' -f 4`))
-echo $AvailData
-echo $AvailRoot
+df -l -k | awk '/vg1-lv1/ {print $4}'
+df -l -k | awk '$6 == "/" {print $4}'

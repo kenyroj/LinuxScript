@@ -52,16 +52,12 @@ NoCtrlM () {
 	done
 }
 
+# Show git status of each given path, Param1..N: git project paths
 Gst() {
-	CODEROOT=$PWD
-
-	for EachGit in $GitPRJ ; do
+	for EachGit in "$@" ; do
 		if [ -d "${EachGit}" ]; then
 			echo -e " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
-			cd $EachGit
-			# git ls-files -om
-			git status --short
-			cd $CODEROOT
+			git -C "$EachGit" status --short
 		else
 			echo -e " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
 		fi
@@ -111,21 +107,6 @@ Glg() {
 }
 Glm() {
 	git lgm "$@"
-}
-
-QGitST() {
-	GitPRJ="
-		kernel/msm-4.14
-		device/qcom/sm6150
-		device/qcom/qssi
-		bootable/bootloader/edk2
-		vendor/qcom/proprietary
-		system/core
-		system/sepolicy
-		device/qcom/sepolicy
-	"
-
-	Gst ${GitPRJ}
 }
 
 ExecTime() {
