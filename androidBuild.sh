@@ -1,18 +1,16 @@
-NOW_TIME=`date +"%Y%m%d-%H%M%S"`
-
 INIT() {
 	source build/envsetup.sh
 	lunch sdm660_64-userdebug
 }
 
 function Build() {
-	LOG_NAME=Log.Build.$NOW_TIME.txt
+	LOG_NAME=Log.Build.`date +"%Y%m%d-%H%M%S"`.txt
 	INIT
 	make $* | tee $LOG_NAME
 }
 
 function MMM() {
-	LOG_NAME=Log.Build.$NOW_TIME.txt
+	LOG_NAME=Log.Build.`date +"%Y%m%d-%H%M%S"`.txt
 	INIT
 	mmm $* | tee $LOG_NAME
 }

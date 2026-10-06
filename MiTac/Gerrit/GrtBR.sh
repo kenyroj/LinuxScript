@@ -7,7 +7,7 @@ EOF
 }
 
 RSync() {
-	rsync -av --delete $1/* $2 
+	rsync -av --delete "${1%/}/" "$2"
 }
 
 Backup() {

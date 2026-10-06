@@ -95,14 +95,16 @@ RmNoUseHardware() {
 
 RmNonCodeFiles() {
 	AllItems="*.wav *.mp3 *.mp4 *.avi *.mov *.jpg *.bmp *.png *.ico *.gif *.m4a *.m4v"
-	AllItems+="*.o *.obj *.S *.pyc *.lib *.so *.dll *.exe *.bat *.cmd *.apk *.sym *.aar *.pdb *.pcm *.whl *.ko"
-	AllItems+="*.mailmap *.cocciconfig *.hprof *.out *.tsv *.eps *.miff *.xxd *.rdp *.efi *.cov *.model *.readme"
-	AllItems+="*.md *.doc *.compiled *.ttc *.ttf *.html *.css *.pdf *.docx *.xsl *.ppt *.csv *.txt *.data *.json *.log *.sax *.pbtxt *.asm"
-	AllItems+="*.zip *.7z *.jar *.tgz *.tar *.gz *.bz2"
+	AllItems+=" *.o *.obj *.S *.pyc *.lib *.so *.dll *.exe *.bat *.cmd *.apk *.sym *.aar *.pdb *.pcm *.whl *.ko"
+	AllItems+=" *.mailmap *.cocciconfig *.hprof *.out *.tsv *.eps *.miff *.xxd *.rdp *.efi *.cov *.model *.readme"
+	AllItems+=" *.md *.doc *.compiled *.ttc *.ttf *.html *.css *.pdf *.docx *.xsl *.ppt *.csv *.txt *.data *.json *.log *.sax *.pbtxt *.asm"
+	AllItems+=" *.zip *.7z *.jar *.tgz *.tar *.gz *.bz2"
+	set -f	# Do not let the patterns expand to files in current dir
 	for EachExt in $AllItems ; do
-		echo ==== Removing ext file: $EachExt
-		find . -iname $EachExt | xargs rm -v
+		echo "==== Removing ext file: $EachExt"
+		find . -type f -iname "$EachExt" -print -delete
 	done
+	set +f
 }
 
 FindFileBySize() {

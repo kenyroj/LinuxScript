@@ -62,7 +62,7 @@ CheckIndexOKorRestoreTemp() {
 }
 
 RepoSyncProj() {
-	cd $SRC_PATH
+	cd "$SRC_PATH" || return 1
 	rm -f opengrok*
 	if [ -e "$NO_REPO_SYNC_FILE" ] ; then
 		LogWithTime "Skip update codebase."
@@ -75,14 +75,14 @@ RepoSyncProj() {
 		LogWithTime "Found .repo, execute: repo sync ..."
 		repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 >> $LOG_FILE 2>&1
 	else
-		LogWithTime "No need to update codebase for $EachF"
+		LogWithTime "No need to update codebase for $ProjectName"
 	fi
 }
 
 PreRepoSync() {
 	if [ ! -d "$SRC_PATH/.repo/manifests" ] ; then return ; fi
 
-	cd $SRC_PATH/.repo/manifests
+	cd "$SRC_PATH/.repo/manifests" || return 1
 	Manifest=`readlink default.xml`
 	if [ -z $Manifest ] ; then Manifest="default.xml" ; fi
 
@@ -126,15 +126,15 @@ PreIndex() {
 	#LogWithTime "==== Remove All Symbolic links ===="
 	#find -L . -xtype l | grep -v '\.repo' | grep -v '\.git' | xargs rm -v >> $LOG_FILE 2>&1
 
-	cd $SRC_PATH
+	cd "$SRC_PATH" || return 1
 	rm -f opengrok*
 
-	find . -name *.json | grep -i test | xargs rm
+	find . -name '*.json' | grep -i test | xargs -r -d '\n' rm
 }
 
 PostIndex() {
 	if [ ! -d "$SRC_PATH/.repo/manifests" ] ; then return ; fi
-	cd $SRC_PATH/.repo/manifests
+	cd "$SRC_PATH/.repo/manifests" || return 1
 	Manifest=`readlink default.xml`
 	git co $Manifest
 	cd $SRC_PATH

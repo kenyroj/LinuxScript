@@ -40,8 +40,8 @@ GrtPushBranch() {
 	export DST=$1
 	repo forall -c 'echo ; \
 		echo [`date +"%m%d-%H%M%S"`] Handle Project: $REPO_PROJECT ; \
-		git diff HEAD ssh://$GerritUser@$GerritHost:29418/$DST --exit-code --quiet ; \
-		if [ "$?" = "0" ] ; then \
+		if git fetch -q ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT refs/heads/$DST 2>/dev/null \
+			&& git diff HEAD FETCH_HEAD --exit-code --quiet ; then \
 			echo " ---- Repository is the same ----" \
 		; else \
 			echo " **** Repository was changed!! ****" ; \
@@ -73,7 +73,7 @@ GrtMergeBranch() {
 	repo forall -c 'echo ; \
 		echo [`date +"%m%d-%H%M%S"`] Merge Project: $REPO_PROJECT ; \
 		git merge --no-ff --log -m "Merge CodeBase $CodeNote into $DST" origin/$SRC \
-		' | tee "Merge_$SRC_to_$DST_$CodeNote.log" 2>&1
+		' 2>&1 | tee "Merge_${SRC}_to_${DST}_${CodeNote}.log"
 
 
 }

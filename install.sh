@@ -1,5 +1,7 @@
 #!/bin/bash
-ThisDir=`pwd`
+ThisDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd "$ThisDir"
+source "$ThisDir/ColorAnsiBash.sh"
 
 # ==== Add Initial.sh in .bashrc ====
 InitName="$ThisDir/Initial.sh"
@@ -22,26 +24,26 @@ fi
 # ==== Sync the Global gitconfig setting ====
 echo
 echo ========
-echo ${COL_YLW}"Check the Global gitconfig is linked"${COL_NON}", command:"
-echo ${COL_GRN}"ln -s $ThisDir/GlobalGitConfig ~/.gitconfig"${COL_NON}
+echo -e ${COL_YLW}"Check the Global gitconfig is linked"${COL_NON}", command:"
+echo -e ${COL_GRN}"ln -s $ThisDir/GlobalGitConfig ~/.gitconfig"${COL_NON}
 
 # ==== Add local git config for GitHub,  in .get/config ====
 echo
 echo ========
-echo ${COL_YLW}"Add local git config for GitHub"${COL_NON}", in .get/config"
-echo ${COL_GRN}"[user]"
+echo -e ${COL_YLW}"Add local git config for GitHub"${COL_NON}", in .get/config"
+echo -e ${COL_GRN}"[user]"
 echo "	name = kenyroj"
 echo "	email = kenyroj@gmail.com"
-echo "	username = kenyroj"${COL_NON}
+echo -e "	username = kenyroj"${COL_NON}
 
 # ==== Sync the Tmux setting ====
 echo
 echo ========
-echo ${COL_YLW}"Check the tmux setting is linked"${COL_NON}", command:"
-echo ${COL_GRN}"ln -s $ThisDir/TmuxConfig ~/.tmux.conf"${COL_NON}
+echo -e ${COL_YLW}"Check the tmux setting is linked"${COL_NON}", command:"
+echo -e ${COL_GRN}"ln -s $ThisDir/TmuxConfig ~/.tmux.conf"${COL_NON}
 
 # ==== Sync the vimrc setting ====
 echo
 echo ========
-echo ${COL_YLW}"Check the vimrc setting is linked"${COL_NON}", command:"
-echo ${COL_GRN}"ln -s $ThisDir/VimRC ~/.vimrc"${COL_NON}
+echo -e ${COL_YLW}"Check the vimrc setting is linked"${COL_NON}", command:"
+echo -e ${COL_GRN}"ln -s $ThisDir/VimRC ~/.vimrc"${COL_NON}

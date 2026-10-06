@@ -18,7 +18,7 @@ ListPkg() {
 KeepNewNFiles() {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 <<Numbers of files to keep>>"
-		exit 1
+		return 1
 	fi
 	NumToKeep=$1
 	Cmd="ls -t | sed -e '1,${NumToKeep}d' | /usr/bin/xargs -d '\n' rm"
@@ -50,7 +50,7 @@ CCat() {
 NoCtrlM () {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 filename [filename1 [filename2 ...]]"
-		exit 1
+		return 1
 	fi
 
 	for each in $* ; do
@@ -147,10 +147,10 @@ ExecTime() {
 }
 
 TopMem() {
-	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%mem | head -$1
+	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%mem | head -${1:-10}
 }
 TopCpu() {
-	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%cpu | head -$1
+	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%cpu | head -${1:-10}
 }
 
 CppChk() {

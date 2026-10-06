@@ -44,7 +44,7 @@ class MainMng(object):
         print("=== Total bytes To Release:", self.TotalBytes,", in MB: ",self.TotalBytes / (1024*1024))
 
     def AddFile(self, path):
-        fstat = os.stat(path)
+        fstat = os.lstat(path)
         F = MngFile();
         F.FullName = path
         #F.LADate = datetime.datetime.fromtimestamp(os.path.getctime(path))
@@ -60,7 +60,7 @@ class MainMng(object):
         return 0
 
 def FileXDaysAgo(now, days, path):
-    CTime = os.path.getctime(path)
+    CTime = os.lstat(path).st_ctime
     if CTime < now - days * 60 * 60 * 24:
         return True
     return False
@@ -80,8 +80,6 @@ def main():
     except: SearchPath = DefaultPath
     try: CheckDays = int(sys.argv[2])
     except: CheckDays = DefaultDays
-    try: SearchPath = sys.argv[1]
-    except: SearchPath = DefaultPath
     try: IsRealDel = int(sys.argv[3])
     except: IsRealDel = DefaulsDel
 
@@ -96,12 +94,14 @@ def main():
             for EachD in SubDirs:
                 FullPath = os.path.join(RootDir, EachD)
                 # removing the empty folder
-                if not os.listdir(FullPath): MNG.AddDir(FullPath)
+                if not os.listdir(FullPath) and FileXDaysAgo(Now, CheckDays, FullPath): MNG.AddDir(FullPath)
 
             # checking the current directory files
             for EachF in Files:
                 FullPath = os.path.join(RootDir, EachF)
-                if Path(FullPath).is_symlink() and not Path(FullPath).exists(): MNG.AddFile(FullPath)
+                if Path(FullPath).is_symlink() and not Path(FullPath).exists():
+                    MNG.AddFile(FullPath)
+                    continue
 
                 # comparing the days
                 if FileXDaysAgo(Now, CheckDays, FullPath): MNG.AddFile(FullPath)
