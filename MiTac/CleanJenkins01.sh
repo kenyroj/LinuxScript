@@ -28,6 +28,7 @@ Main() {
 	AllDir+="n702-android-tn "
 	AllDir+="n702-android-5g "
 	AllDir+="n702-android-geotab "
+	AllDir+="n702-android-dnsy "
 
 	AllDir+="n706-android-dev/ "
 	AllDir+="n706-android-onaz_a/ "
@@ -40,10 +41,15 @@ Main() {
 	AllDir+="n689-android-b2b/ "
 	AllDir+="n689-android-dd/ "
 	AllDir+="n689-android-dev/ "
+	AllDir+="n689-android-nec/ "
 	AllDir+="n689-android-pcba/ "
+	AllDir+="n689-android-smas/ "
 	AllDir+="n689-android-go/ "
 	AllDir+="n689-android-testota/ "
-	AllDir+="n689-android-testota_axi "
+	AllDir+="n689-android-testota_b2b "
+	AllDir+="n689-android-testota_dd "
+	AllDir+="n689-android-testota_nec "
+	AllDir+="n689-android-testota_smas "
 	for EachDir in $AllDir ; do
 		echo DIR: $EachDir
 		RunAndLog python3 /data/aken.hsu/script/DeleteOldFile.py /data/Images/$EachDir/custom/	$CM_KEEP_DAY $IsDelete
