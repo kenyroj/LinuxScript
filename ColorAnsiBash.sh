@@ -1,14 +1,14 @@
 #!/bin/bash
 
-export COL_NON='\033[m'
-export COL_GRY='\033[1;30m'
-export COL_RED='\033[1;31m'
-export COL_GRN='\033[1;32m'
-export COL_YLW='\033[1;33m'
-export COL_BLU='\033[1;34m'
-export COL_PUP='\033[1;35m'
-export COL_LAK='\033[1;36m'
-export COL_WHT='\033[1;37m'
+export COL_NON=$'\033[m'
+export COL_GRY=$'\033[1;30m'
+export COL_RED=$'\033[1;31m'
+export COL_GRN=$'\033[1;32m'
+export COL_YLW=$'\033[1;33m'
+export COL_BLU=$'\033[1;34m'
+export COL_PUP=$'\033[1;35m'
+export COL_LAK=$'\033[1;36m'
+export COL_WHT=$'\033[1;37m'
 
 export PSC_NON='\[\e[m\]'
 export PSC_GRY='\[\e[1;30m\]'

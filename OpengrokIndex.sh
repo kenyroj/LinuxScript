@@ -6,8 +6,10 @@ export PATH=/usr/local/sbin:/usr/local/bin:$PATH
 
 OPENGROK_HOME=/data/OpenGROK
 
+source "$( dirname "${BASH_SOURCE[0]}" )/Common.sh"
+
 LogWithTime() {
-	echo [`date +"%m%d-%H%M%S"`] "$*" >> $LOG_FILE 2>&1
+	echo [`Ts`] "$*" >> $LOG_FILE 2>&1
 }
 
 OpenGrokIndex() {
@@ -62,7 +64,7 @@ CheckIndexOKorRestoreTemp() {
 }
 
 RepoSyncProj() {
-	cd $SRC_PATH
+	cd "$SRC_PATH" || return 1
 	rm -f opengrok*
 	if [ -e "$NO_REPO_SYNC_FILE" ] ; then
 		LogWithTime "Skip update codebase."
@@ -73,16 +75,16 @@ RepoSyncProj() {
 		git pull >> $LOG_FILE 2>&1
 	elif [ -d ".repo" ] ; then
 		LogWithTime "Found .repo, execute: repo sync ..."
-		repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 >> $LOG_FILE 2>&1
+		repo sync $REPO_SYNC_OPTS >> $LOG_FILE 2>&1
 	else
-		LogWithTime "No need to update codebase for $EachF"
+		LogWithTime "No need to update codebase for $ProjectName"
 	fi
 }
 
 PreRepoSync() {
 	if [ ! -d "$SRC_PATH/.repo/manifests" ] ; then return ; fi
 
-	cd $SRC_PATH/.repo/manifests
+	cd "$SRC_PATH/.repo/manifests" || return 1
 	Manifest=`readlink default.xml`
 	if [ -z $Manifest ] ; then Manifest="default.xml" ; fi
 
@@ -126,15 +128,15 @@ PreIndex() {
 	#LogWithTime "==== Remove All Symbolic links ===="
 	#find -L . -xtype l | grep -v '\.repo' | grep -v '\.git' | xargs rm -v >> $LOG_FILE 2>&1
 
-	cd $SRC_PATH
+	cd "$SRC_PATH" || return 1
 	rm -f opengrok*
 
-	find . -name *.json | grep -i test | xargs rm
+	find . -name '*.json' | grep -i test | xargs -r -d '\n' rm
 }
 
 PostIndex() {
 	if [ ! -d "$SRC_PATH/.repo/manifests" ] ; then return ; fi
-	cd $SRC_PATH/.repo/manifests
+	cd "$SRC_PATH/.repo/manifests" || return 1
 	Manifest=`readlink default.xml`
 	git co $Manifest
 	cd $SRC_PATH
@@ -162,8 +164,6 @@ Main() {
 		TMP_DATA=${OPENGROK_HOME}/data/"$ProjectName"_tmp
 		SRC_CONF=${OPENGROK_HOME}/etc/"$ProjectName".xml
 		TMP_CONF=${OPENGROK_HOME}/etc/"$ProjectName"_tmp.xml
-		TMP_FOLDER=${OPENGROK_HOME}/.temp
-		SkipFolders="art bionic dalvik developers development disregard external libcore libnativehelper pdk platform_testing prebuilts sdk shortcut-fe test toolchain tools"
 
 		INDEX_JOB_TIME=`date +"%Y%m%d-%H%M%S"`
 		LOG_FILE=${OPENGROK_HOME}/log/"$INDEX_JOB_TIME"-"$ProjectName".log

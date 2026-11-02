@@ -1,11 +1,8 @@
 CM_KEEP_DAY=14
 DA_KEEP_DAY=180
 
-RunAndLog() {
-	echo " ===> EXEC: [1;33m$*[m"
-	$*
-	return ${PIPESTATUS[0]}
-}
+ScriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
+source "$ScriptDir/Common.sh"
 
 
 Main() {
@@ -52,12 +49,12 @@ Main() {
 	AllDir+="n689-android-testota_smas "
 	for EachDir in $AllDir ; do
 		echo DIR: $EachDir
-		RunAndLog python3 /data/aken.hsu/script/DeleteOldFile.py /data/Images/$EachDir/custom/	$CM_KEEP_DAY $IsDelete
-		RunAndLog python3 /data/aken.hsu/script/DeleteOldFile.py /data/Images/$EachDir/daily/	$DA_KEEP_DAY $IsDelete
+		ExeCmd python3 $ScriptDir/DeleteOldFile.py /data/Images/$EachDir/custom/	$CM_KEEP_DAY $IsDelete
+		ExeCmd python3 $ScriptDir/DeleteOldFile.py /data/Images/$EachDir/daily/	$DA_KEEP_DAY $IsDelete
 
 	done
 
-	RunAndLog python3 /data/aken.hsu/script/DeleteOldFile.py '/data/Images/custom-changenote/'	$CM_KEEP_DAY $IsDelete
+	ExeCmd python3 $ScriptDir/DeleteOldFile.py '/data/Images/custom-changenote/'	$CM_KEEP_DAY $IsDelete
 }
 
 Main $*

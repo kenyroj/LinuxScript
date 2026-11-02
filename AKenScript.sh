@@ -1,24 +1,13 @@
 #!/bin/bash
 
-# Param1: StartSec
-CaculateDuration() {
-	local StartSec=$1
-	local EndSec=`date +%s.%N`
-	local ElapsedSec=$(echo "$EndSec - $StartSec" | bc)
-	local BuildMin=$(echo "$ElapsedSec / 60" | bc)
-	local BuildSec=$(echo "$ElapsedSec % 60" | bc)
-	printf "%02d:%05.2f" $BuildMin $BuildSec
-}
-
 ListPkg() {
-	SHORT_HOST=`echo $HOSTNAME | rev | cut -d '-' -f 1 | rev`
-	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${SHORT_HOST}
+	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${HOSTNAME##*-}
 }
 
 KeepNewNFiles() {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 <<Numbers of files to keep>>"
-		exit 1
+		return 1
 	fi
 	NumToKeep=$1
 	Cmd="ls -t | sed -e '1,${NumToKeep}d' | /usr/bin/xargs -d '\n' rm"
@@ -50,7 +39,7 @@ CCat() {
 NoCtrlM () {
 	if test $# -eq 0 ; then
 		echo "USAGE: $0 filename [filename1 [filename2 ...]]"
-		exit 1
+		return 1
 	fi
 
 	for each in $* ; do
@@ -63,18 +52,14 @@ NoCtrlM () {
 	done
 }
 
+# Show git status of each given path, Param1..N: git project paths
 Gst() {
-	CODEROOT=$PWD
-
-	for EachGit in $GitPRJ ; do
+	for EachGit in "$@" ; do
 		if [ -d "${EachGit}" ]; then
-			echo -e " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
-			cd $EachGit
-			# git ls-files -om
-			git status --short
-			cd $CODEROOT
+			echo " $COL_YLW====>$COL_NON Checking git:$COL_LAK $EachGit $COL_NON"
+			git -C "$EachGit" status --short
 		else
-			echo -e " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
+			echo " $COL_GRY==X project path $COL_BLU$EachGit$COL_GRY not existed. $COL_NON"
 		fi
 	done
 }
@@ -116,41 +101,25 @@ ErrBuild() {
 			-e 'out/\.lock'
 }
 
+# git lg / git lgm are defined in GlobalGitConfig
 Glg() {
-	git log --date=format:'%Y%m%d_%H%M%S' --no-merges --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
+	git lg "$@"
 }
 Glm() {
-	git log --date=format:'%Y%m%d_%H%M%S'             --pretty=format:"%Cred%h%Creset %ad %Cgreen%ae%Creset%n    %s" --since="2020-07-01" $*
-}
-
-QGitST() {
-	GitPRJ="
-		kernel/msm-4.14
-		device/qcom/sm6150
-		device/qcom/qssi
-		bootable/bootloader/edk2
-		vendor/qcom/proprietary
-		system/core
-		system/sepolicy
-		device/qcom/sepolicy
-	"
-
-	Gst ${GitPRJ}
+	git lgm "$@"
 }
 
 ExecTime() {
-	BeginTime=`date +%s`
-	$*
-	EndTime=`date +%s`
-	CostTime=`date -d@$((EndTime-BeginTime)) -u +%H:%M:%S`
-	echo " --=== Cost time: $CostTime ===--"
+	local StartSec=`date +%s.%N`
+	"$@"
+	echo " --=== Cost time: $(CaculateDuration $StartSec) ===--"
 }
 
 TopMem() {
-	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%mem | head -$1
+	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%mem | head -${1:-10}
 }
 TopCpu() {
-	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%cpu | head -$1
+	ExeCmd ps -eo pid,cmd,%mem,%cpu --sort=-%cpu | head -${1:-10}
 }
 
 CppChk() {
@@ -163,8 +132,8 @@ CppXChk() {
 
 RepoSync() {
 	local StartSec=`date +%s.%N`
-	ExeCmd repo sync -cdq --no-tags --no-repo-verify --no-clone-bundle --jobs=2 --force-sync $*
-	echo -e "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
+	ExeCmd repo sync $REPO_SYNC_OPTS --force-sync $*
+	echo "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
 }
 
 DiskUsage() {

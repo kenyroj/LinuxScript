@@ -1,5 +1,7 @@
 #!/bin/bash
-ThisDir=`pwd`
+ThisDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+cd "$ThisDir"
+source "$ThisDir/ColorAnsiBash.sh"
 
 # ==== Add Initial.sh in .bashrc ====
 InitName="$ThisDir/Initial.sh"
