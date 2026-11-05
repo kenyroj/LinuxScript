@@ -17,6 +17,7 @@ Main() {
 	AllDir+="n868-ubuntu22-dev/ n868-yocto40-dev/ "
 	AllDir+="n875-l5.15.32_u22-dev/ n875-l5.15.32_y40-dev/ n875-l6.01.36_u22-dev/ n875-l6.01.55_u22-dev/ n875-l6.01.55_y50-dev/ n875-yocto40-dev/ "
 	AllDir+="n748-android13-dev sg560devb-android13-dev "
+	AllDir+="qcs610-android-evb-dev qcs610-android12-dev "
 
 	AllDir+="n702-android-aapexdemo "
 	AllDir+="n702-android-smarterai "
@@ -25,7 +26,7 @@ Main() {
 	AllDir+="n702-android-tn "
 	AllDir+="n702-android-5g "
 	AllDir+="n702-android-geotab "
-	AllDir+="n702-android-dnsy "
+	AllDir+="n702-android-dsny "
 
 	AllDir+="n706-android-dev/ "
 	AllDir+="n706-android-onaz_a/ "
