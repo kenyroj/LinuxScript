@@ -1,5 +1,6 @@
 CM_KEEP_DAY=14
 DA_KEEP_DAY=180
+RL_UD_KEEP_DAY=7	# release 裡的 userdebug 保留天數 (n689)
 
 ScriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." >/dev/null 2>&1 && pwd )"
 source "$ScriptDir/Common.sh"
@@ -56,6 +57,15 @@ Main() {
 	done
 
 	ExeCmd python3 $ScriptDir/DeleteOldFile.py '/data/Images/custom-changenote/'	$CM_KEEP_DAY $IsDelete
+
+	# n689 daily 依政策會同步到 release, 裡面的 userdebug 只保留 RL_UD_KEEP_DAY 天
+	# n689-android-pcba 本來就只出 userdebug, 不清
+	if [ "$IsDelete" = "1" ] ; then FindAct="-print -delete" ; else FindAct="-print" ; fi
+	for EachDir in n689-android-axis n689-android-b2b n689-android-dd n689-android-dev n689-android-nec n689-android-smas ; do
+		echo DIR: $EachDir/release userdebug
+		[ -d /data/Images/$EachDir/release/ ] || continue
+		ExeCmd find /data/Images/$EachDir/release/ -maxdepth 1 -type f -name '*-userdebug-*' -ctime +$RL_UD_KEEP_DAY $FindAct
+	done
 }
 
 Main $*

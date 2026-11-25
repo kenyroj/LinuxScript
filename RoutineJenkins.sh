@@ -1,14 +1,13 @@
-
+#!/bin/bash
 
 Main() {
-	cd /mnt/nfs/QCS610AndroidMirror/
+	cd /mnt/nfs/QCS610AndroidMirror/ || return 1
 	rm -rf .repo
-	`cat repo_cmd.la10`
+	bash repo_cmd.la10
 	repo sync
 	rm -rf .repo
-	`cat repo_cmd.la20`
+	bash repo_cmd.la20
 	repo sync
-	
 }
 
 Main

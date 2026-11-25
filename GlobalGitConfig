@@ -1,6 +1,6 @@
 [user]
 	name = AKen.Hsu
-	email = aken.hsu@mic.com.tw
+	email = aken.hsu@mitacmdt.com
 
 [url "http://mdt-gerrit01.mic.com.tw:8888/google/git-repo"]
 	insteadOf = https://gerrit.googlesource.com/git-repo

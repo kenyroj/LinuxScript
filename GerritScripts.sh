@@ -5,7 +5,7 @@ InitGerrit() {
 }
 
 GrtLog() {
-	if [ -z $1 ] ; then
+	if [ -z "$1" ] ; then
 		echo "Usage: Param1: BranchName"
 		return 1
 	fi
@@ -31,7 +31,7 @@ GrtStatus() {
 }
 
 GrtPushBranch() {
-	if [ -z $1 ] ; then
+	if [ -z "$1" ] ; then
 		echo "Usage: Param1: DST BranchName"
 		return 1
 	fi
@@ -52,7 +52,7 @@ GrtPushBranch() {
 }
 
 GrtMergeBranch() {
-	if [ -z $3 ] ; then
+	if [ -z "$3" ] ; then
 		echo "Usage: Param1: SRC BranchName"
 		echo "Usage: Param2: DST BranchName"
 		echo "Usage: Param3: CodeNote: FC CS ..."
@@ -79,7 +79,7 @@ GrtMergeBranch() {
 }
 
 GrtCloneBranch() {
-	if [ -z $2 ] ; then
+	if [ -z "$2" ] ; then
 		echo "Usage: Param1: SRC BranchName"
 		echo "Usage: Param2: DST BranchName"
 		return 1
@@ -96,7 +96,7 @@ GrtCloneBranch() {
 }
 
 GrtDeleteBranch() {
-	if [ -z $1 ] ; then
+	if [ -z "$1" ] ; then
 		echo "Usage: Param1: DST BranchName"
 		return 1
 	fi

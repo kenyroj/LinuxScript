@@ -6,7 +6,7 @@ ListPkg() {
 
 KeepNewNFiles() {
 	if test $# -eq 0 ; then
-		echo "USAGE: $0 <<Numbers of files to keep>>"
+		echo "USAGE: ${FUNCNAME[0]} <<Numbers of files to keep>>"
 		return 1
 	fi
 	NumToKeep=$1
@@ -14,11 +14,6 @@ KeepNewNFiles() {
 #	Cmd=rm `ls -t | awk 'NR>5'`
 	echo Run this command: ${COL_YLW} $Cmd${COL_NON}
 #	ExeCmd $Cmd
-}
-
-ChOwnGrp() {
-	chown $*
-	chgrp $*
 }
 
 SmbUser() {
@@ -38,17 +33,14 @@ CCat() {
 
 NoCtrlM () {
 	if test $# -eq 0 ; then
-		echo "USAGE: $0 filename [filename1 [filename2 ...]]"
+		echo "USAGE: ${FUNCNAME[0]} filename [filename1 [filename2 ...]]"
 		return 1
 	fi
 
-	for each in $* ; do
-		tmpFile=tmpFile$RANDOM
-		ls -l $each
-		cat $each | tr -d '\r' > $tmpFile
-		cat $tmpFile > $each
-		ls -l $each
-		rm -f $tmpFile
+	for each in "$@" ; do
+		ls -l "$each"
+		sed -i 's/\r//g' "$each"
+		ls -l "$each"
 	done
 }
 
@@ -65,7 +57,7 @@ Gst() {
 }
 
 ErrBuild() {
-	if [ -z $1 ] ; then
+	if [ -z "$1" ] ; then
 		LogName=_Latest.log
 	else
 		LogName=$1

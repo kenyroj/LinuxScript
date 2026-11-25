@@ -5,7 +5,7 @@ source "$ThisDir/ColorAnsiBash.sh"
 
 # ==== Add Initial.sh in .bashrc ====
 InitName="$ThisDir/Initial.sh"
-if grep -q $InitName ~/.bashrc ; then
+if grep -qF "$InitName" ~/.bashrc ; then
 	echo "Setting of $InitName was in ~/.bashrc"
 else
 	echo "Add Setting of $InitName in ~/.bashrc... "
@@ -15,10 +15,11 @@ fi
 # ==== Add z.sh for quick access path ====
 if [ -d "z" ]; then
 	echo "z.sh has already installed, sync it."
-	cd z ; git pull
+	git -C z pull
 else
-	git clone https://github.com/rupa/z
-	echo "source $ThisDir/z/z.sh" >> ~/.bashrc
+	if git clone https://github.com/rupa/z ; then
+		echo "source $ThisDir/z/z.sh" >> ~/.bashrc
+	fi
 fi
 
 # ==== Sync the Global gitconfig setting ====
@@ -27,10 +28,10 @@ echo ========
 echo ${COL_YLW}"Check the Global gitconfig is linked"${COL_NON}", command:"
 echo ${COL_GRN}"ln -s $ThisDir/GlobalGitConfig ~/.gitconfig"${COL_NON}
 
-# ==== Add local git config for GitHub,  in .get/config ====
+# ==== Add local git config for GitHub,  in .git/config ====
 echo
 echo ========
-echo ${COL_YLW}"Add local git config for GitHub"${COL_NON}", in .get/config"
+echo ${COL_YLW}"Add local git config for GitHub"${COL_NON}", in .git/config"
 echo ${COL_GRN}"[user]"
 echo "	name = kenyroj"
 echo "	email = kenyroj@gmail.com"

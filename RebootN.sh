@@ -1,3 +1,4 @@
+#!/bin/bash
 BOOT_INTERVAL=100
 BOOT_COUNT=0
 DEF_COUNT=6
@@ -10,16 +11,16 @@ else
 fi
 echo MAX_COUNT=$MAX_COUNT
 
-while [ 1 ] ; do
+while true ; do
 	((BOOT_COUNT=BOOT_COUNT+1))
 	echo [$(date +"%m%d-%H%M%S")] Reboot android device for $BOOT_COUNT times.
 	adb wait-for-device reboot
-	echo [$(date +"%m%d-%H%M%S")] Waiting for $BOOT_INTERVAL seconds
-	
+
 	if [ $MAX_COUNT -eq $BOOT_COUNT ] ; then
 		break
 	fi
-	
+
+	echo [$(date +"%m%d-%H%M%S")] Waiting for $BOOT_INTERVAL seconds
 	sleep $BOOT_INTERVAL
 done
 

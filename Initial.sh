@@ -9,8 +9,8 @@ source $LocalPath/AKenScript.sh
 # ==== Alias ====
 alias ls='ls --color=auto -F'
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+alias fgrep='grep -F --color=auto'
+alias egrep='grep -E --color=auto'
 alias Df='df -h | grep -v loop | grep -v tmpfs'
 
 alias ..='cd ..;'
