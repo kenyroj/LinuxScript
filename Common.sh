@@ -17,7 +17,7 @@ ExeCmd() {
 }
 
 # Param1: StartSec (from `date +%s.%N`), prints MM:SS.ss
-CaculateDuration() {
+CalculateDuration() {
 	local StartSec=$1
 	local EndSec=`date +%s.%N`
 	local ElapsedSec=$(echo "$EndSec - $StartSec" | bc)

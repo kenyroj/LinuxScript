@@ -5,7 +5,7 @@
 
 InitGerrit() {
 	export GerritHost=`grep gerrit01 ~/.gitconfig | grep http | cut -d ':' -f 2 | tr -d '/'`
-	export GerritUser=`grep email ~/.gitconfig | cut -d '=' -f 2 | cut -d '@' -f 1 | tr -d ' '`
+	export GerritUser=`git config --global user.email | cut -d '@' -f 1`
 	echo "==== Your ID: $GerritUser @ $GerritHost"
 }
 

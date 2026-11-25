@@ -4,7 +4,8 @@
 # Param1: Gerrit host
 
 GERRIT_HOST=$1
+GERRIT_USER=$(git config --global user.email | cut -d '@' -f 1)
 
 echo
 echo [`date +"%y%m%d-%H%M%S"`] Gerrit Host:$GERRIT_HOST, Push refs/heads/* and refs/tags/* of $REPO_PROJECT
-git push ssh://aken.hsu@$GERRIT_HOST:29418/$REPO_PROJECT 'refs/heads/*' 'refs/tags/*'
+git push ssh://$GERRIT_USER@$GERRIT_HOST:29418/$REPO_PROJECT 'refs/heads/*' 'refs/tags/*'

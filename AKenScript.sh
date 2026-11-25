@@ -4,16 +4,25 @@ ListPkg() {
 	sudo apt list --installed > /mnt/nfs/Share/ToAken/PKGs.${HOSTNAME##*-}
 }
 
+# Delete all but the newest N files in the current directory (asks first)
 KeepNewNFiles() {
 	if test $# -eq 0 ; then
 		echo "USAGE: ${FUNCNAME[0]} <<Numbers of files to keep>>"
 		return 1
 	fi
-	NumToKeep=$1
-	Cmd="ls -t | sed -e '1,${NumToKeep}d' | /usr/bin/xargs -d '\n' rm"
-#	Cmd=rm `ls -t | awk 'NR>5'`
-	echo Run this command: ${COL_YLW} $Cmd${COL_NON}
-#	ExeCmd $Cmd
+	local NumToKeep=$1
+	local ToDelete
+	ToDelete=$(ls -t | tail -n +$((NumToKeep + 1)))
+	if [ -z "$ToDelete" ] ; then
+		echo "Nothing to delete, keep newest $NumToKeep files."
+		return 0
+	fi
+	echo "${COL_YLW}Will delete these files:${COL_NON}"
+	echo "$ToDelete"
+	local Answer
+	read -p "Delete the files above in $PWD? [y/N] " Answer
+	[ "$Answer" = "y" -o "$Answer" = "Y" ] || return 1
+	echo "$ToDelete" | ExeCmd xargs -d '\n' rm
 }
 
 SmbUser() {
@@ -104,7 +113,7 @@ Glm() {
 ExecTime() {
 	local StartSec=`date +%s.%N`
 	"$@"
-	echo " --=== Cost time: $(CaculateDuration $StartSec) ===--"
+	echo " --=== Cost time: $(CalculateDuration $StartSec) ===--"
 }
 
 TopMem() {
@@ -125,7 +134,7 @@ CppXChk() {
 RepoSync() {
 	local StartSec=`date +%s.%N`
 	ExeCmd repo sync $REPO_SYNC_OPTS --force-sync $*
-	echo "$COL_PUP ==== Total costs: $(CaculateDuration $StartSec) Sec.$COL_NON"
+	echo "$COL_PUP ==== Total costs: $(CalculateDuration $StartSec) Sec.$COL_NON"
 }
 
 DiskUsage() {
