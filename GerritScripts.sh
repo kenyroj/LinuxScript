@@ -1,3 +1,8 @@
+#!/bin/bash
+# Gerrit / repo helpers. NOT sourced by Initial.sh on purpose: most functions run
+# "repo forall" and touch every project, so load it by hand when needed:
+#   source ~/script/GerritScripts.sh
+
 InitGerrit() {
 	export GerritHost=`grep gerrit01 ~/.gitconfig | grep http | cut -d ':' -f 2 | tr -d '/'`
 	export GerritUser=`grep email ~/.gitconfig | cut -d '=' -f 2 | cut -d '@' -f 1 | tr -d ' '`
@@ -30,25 +35,45 @@ GrtStatus() {
 '
 }
 
+# Force push HEAD of every repo project to refs/heads/<DST> on Gerrit when it differs.
+# Param1: DST BranchName, Param2: -n (dry-run, only list changed projects) / -y (skip confirm)
 GrtPushBranch() {
 	if [ -z "$1" ] ; then
 		echo "Usage: Param1: DST BranchName"
+		echo "Usage: Param2: -n (dry-run) | -y (skip confirmation)"
 		return 1
 	fi
 
 	InitGerrit
 	export DST=$1
-	repo forall -c 'echo ; \
-		echo [`date +"%m%d-%H%M%S"`] Handle Project: $REPO_PROJECT ; \
+	export DRY_RUN=0
+	case "$2" in
+	-n)	DRY_RUN=1 ;;
+	-y)	;;
+	*)
+		local Answer
+		read -p "FORCE push all projects to $GerritHost refs/heads/$DST ? [y/N] " Answer
+		[ "$Answer" = "y" -o "$Answer" = "Y" ] || return 1
+		;;
+	esac
+
+	repo forall -c '
+		echo ; echo "[$(date +"%m%d-%H%M%S")] Handle Project: $REPO_PROJECT"
 		if git fetch -q ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT refs/heads/$DST 2>/dev/null \
-			&& git diff HEAD FETCH_HEAD --exit-code --quiet ; then \
-			echo " ---- Repository is the same ----" \
-		; else \
-			echo " **** Repository was changed!! ****" ; \
-			gitdir=$(git rev-parse --git-dir); scp -p -P 29418 $GerritUser@$GerritHost:hooks/commit-msg ${gitdir}/hooks/ ; \
-			git commit --amend --no-edit ; \
-			git push -f ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT HEAD:refs/heads/$DST ; \
-		fi '
+			&& git diff HEAD FETCH_HEAD --exit-code --quiet ; then
+			echo " ---- Repository is the same ----"
+		elif [ "$DRY_RUN" = "1" ] ; then
+			echo " **** Repository was changed (dry-run, skip) ****"
+		else
+			echo " **** Repository was changed!! ****"
+			gitdir=$(git rev-parse --git-dir)
+			# Only install the commit-msg hook / amend when Change-Id is missing
+			if ! git log -1 --format=%B | grep -q "^Change-Id:" ; then
+				[ -x "${gitdir}/hooks/commit-msg" ] || scp -p -P 29418 $GerritUser@$GerritHost:hooks/commit-msg ${gitdir}/hooks/
+				git commit --amend --no-edit
+			fi
+			git push -f ssh://$GerritUser@$GerritHost:29418/$REPO_PROJECT HEAD:refs/heads/$DST
+		fi'
 }
 
 GrtMergeBranch() {
